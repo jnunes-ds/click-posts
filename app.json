@@ -1,0 +1,12 @@
+{
+  "name": "click-posts",
+  "displayName": "click-posts",
+  "expo": {
+    "name": "click-posts",
+    "slug": "click-posts",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
