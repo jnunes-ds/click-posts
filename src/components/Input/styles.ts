@@ -42,6 +42,6 @@ export const InputText = styled(TextInput)`
   flex: 1;
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.secondary};
-  color: ${({ theme }) => theme.colors.text}
+  color: ${({ theme }) => theme.colors.text};
   padding-left: ${RFValue(10)}px;
 `;

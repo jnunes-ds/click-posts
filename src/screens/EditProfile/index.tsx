@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
-import { Header, Input } from '../../components';
+import { useTheme } from 'styled-components';
+import { Button, Header, Input } from '../../components';
 
 import {
   Container,
@@ -17,6 +18,9 @@ import {
 
 export function EditProfile() {
   const [email, setEmail] = useState('');
+
+  const theme = useTheme();
+  const { success, subtitle, main } = theme.colors;
 
   return (
     <Container>
@@ -61,6 +65,9 @@ export function EditProfile() {
                 <Input iconName="mail" title="Email" />
               </CompanyInformation>
             </CompanyInformationContainer>
+            <Button title="Salvar Alterações" color={success} />
+            <Button title="Modificar senha" color={subtitle} />
+            <Button title="Excluir conta" color={main} />
           </InformationsContainer>
         </Body>
       </Content>

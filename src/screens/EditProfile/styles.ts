@@ -26,6 +26,8 @@ export const InformationsContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.shape};
   border-radius: 10px;
   padding: ${RFValue(43)}px;
+  border-radius: ${RFValue(10)}px;
+  margin-top: 5px;
 `;
 
 export const UserInformation = styled.View`
