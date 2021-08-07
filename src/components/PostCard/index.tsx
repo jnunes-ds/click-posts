@@ -14,7 +14,7 @@ import {
   Date,
 } from './styles';
 
-interface Props {
+interface Data {
   name: string;
   title: string;
   message: string;
@@ -22,13 +22,11 @@ interface Props {
   isMyPost?: boolean;
 }
 
-export function PostCard({
-  name,
-  title,
-  message,
-  date = '05/08/2021',
-  isMyPost,
-}: Props) {
+interface Props {
+  data: Data;
+}
+
+export function PostCard({ data }: Props) {
   const theme = useTheme();
   const { subtitle } = theme.colors;
 
@@ -36,16 +34,16 @@ export function PostCard({
     <Container>
       <Header>
         <BorderlessButton onPress={() => {}}>
-          <Name> {name} </Name>
+          <Name> {data.name} </Name>
         </BorderlessButton>
-        {isMyPost && <Feather name="edit" color={subtitle} size={24} />}
+        {data.isMyPost && <Feather name="edit" color={subtitle} size={24} />}
       </Header>
       <Content>
-        <Title> {title} </Title>
-        <Message> {message} </Message>
+        <Title> {data.title} </Title>
+        <Message> {data.message} </Message>
       </Content>
       <Footer>
-        <Date> {date} </Date>
+        <Date> {data.date} </Date>
       </Footer>
     </Container>
   );
