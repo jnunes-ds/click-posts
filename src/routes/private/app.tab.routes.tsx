@@ -2,13 +2,13 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
-import { Platform } from 'react-native';
-import { Home, NewPost } from '../screens';
+import { NewPost } from '../../screens';
+import { AppPrimaryRoutes } from './app.stack.primary.routes';
 
-import HomeSvg from '../assets/home.svg';
-import PlusSvg from '../assets/plus-square.svg';
-import PersonSvg from '../assets/person.svg';
-import { EditProfile } from '../screens/EditProfile/index';
+import HomeSvg from '../../assets/home.svg';
+import PlusSvg from '../../assets/plus-square.svg';
+import PersonSvg from '../../assets/person.svg';
+import { AppSecondaryRoutes } from './app.stack.secondary.routes';
 
 interface Props {
   color: string;
@@ -35,7 +35,7 @@ export function AppRoutes() {
     >
       <Screen
         name="Home"
-        component={Home}
+        component={AppPrimaryRoutes}
         options={{
           tabBarIcon: ({ color }: Props) => (
             <HomeSvg width={28} height={24} fill={color} />
@@ -53,7 +53,7 @@ export function AppRoutes() {
       />
       <Screen
         name="EditProfile"
-        component={EditProfile}
+        component={AppSecondaryRoutes}
         options={{
           tabBarIcon: ({ color }: Props) => (
             <PersonSvg width={28} height={24} fill={color} stroke={color} />
