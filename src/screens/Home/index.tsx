@@ -5,9 +5,9 @@ import { Header, PostCard } from '../../components';
 
 import { Container, Content, Posts } from './styles';
 
-interface User {
+interface Post {
   id: string;
-  name: string;
+  userName: string;
   title: string;
   message: string;
   date?: string;
@@ -15,10 +15,10 @@ interface User {
 }
 
 export function Home() {
-  const users: User[] = [
+  const posts: Post[] = [
     {
       id: '1',
-      name: 'Júnior',
+      userName: 'Júnior',
       title: 'Por que nossas postagens parecem tão detro de um padrão?',
       message:
         'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
@@ -27,7 +27,7 @@ export function Home() {
     },
     {
       id: '2',
-      name: 'Larissa',
+      userName: 'Larissa',
       title:
         'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
       message:
@@ -36,7 +36,7 @@ export function Home() {
     },
     {
       id: '3',
-      name: 'Lis',
+      userName: 'Lis',
       title:
         'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
       message:
@@ -45,14 +45,14 @@ export function Home() {
     },
     {
       id: '4',
-      name: 'Nunes',
+      userName: 'Nunes',
       title:
         'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
       message:
         'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
       isMypost: false,
     },
-  ] as User[];
+  ] as Post[];
 
   return (
     <Container>
@@ -62,10 +62,10 @@ export function Home() {
         translucent
       />
       <Content>
-        <Header title="Júnior" isHome />
+        <Header userName="Júnior" name="Júnior Nunes" isHome />
         <Posts>
           <FlatList
-            data={users}
+            data={posts}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <PostCard data={item} />}
             showsVerticalScrollIndicator={false}

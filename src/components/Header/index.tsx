@@ -2,23 +2,52 @@ import React from 'react';
 import { Feather } from '@expo/vector-icons';
 
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { Container, TxtContainer, Greetings, Title } from './styles';
+import {
+  Container,
+  Content,
+  TxtContainer,
+  Greetings,
+  Title,
+  SubtitleContainer,
+  Subtitle,
+  InformationContainer,
+  Information,
+} from './styles';
 
 interface Props {
-  title: string;
+  name: string;
+  userName: string;
   isHome?: boolean;
+  isMyProfile?: boolean;
 }
 
-export function Header({ title, isHome }: Props) {
+export function Header({ name, userName, isHome, isMyProfile }: Props) {
   return (
     <Container>
-      <TxtContainer>
-        {isHome && <Greetings>Olá,</Greetings>}
-        <Title> {title}! </Title>
-      </TxtContainer>
-      <BorderlessButton onPress={() => {}}>
-        <Feather name="log-out" color="white" size={34} />
-      </BorderlessButton>
+      {isHome ? (
+        <Content>
+          <TxtContainer>
+            <Greetings>Olá,</Greetings>
+            <Title> {userName} </Title>
+          </TxtContainer>
+          <BorderlessButton onPress={() => {}}>
+            <Feather name="log-out" color="white" size={34} />
+          </BorderlessButton>
+        </Content>
+      ) : (
+        <Content>
+          <TxtContainer>
+            <Title> {name} </Title>
+            <SubtitleContainer>
+              <Subtitle> ({userName}) </Subtitle>
+              <InformationContainer>
+                {isMyProfile && <Information>Edit</Information>}
+                <Information> Profile</Information>
+              </InformationContainer>
+            </SubtitleContainer>
+          </TxtContainer>
+        </Content>
+      )}
     </Container>
   );
 }

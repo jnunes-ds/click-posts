@@ -10,7 +10,7 @@ import {
 } from '@expo-google-fonts/noto-sans';
 
 import theme from './src/global/styles/theme';
-import { Home } from './src/screens';
+import { Home, Profile } from './src/screens';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <Profile />
     </ThemeProvider>
   );
 }

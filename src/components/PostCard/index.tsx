@@ -15,11 +15,12 @@ import {
 } from './styles';
 
 interface Data {
-  name: string;
+  id: string;
+  userName: string;
   title: string;
   message: string;
   date?: string;
-  isMyPost?: boolean;
+  isMyPost: boolean;
 }
 
 interface Props {
@@ -34,7 +35,7 @@ export function PostCard({ data }: Props) {
     <Container>
       <Header>
         <BorderlessButton onPress={() => {}}>
-          <Name> {data.name} </Name>
+          <Name> {data.userName} </Name>
         </BorderlessButton>
         {data.isMyPost && <Feather name="edit" color={subtitle} size={24} />}
       </Header>

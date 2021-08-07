@@ -4,10 +4,10 @@ interface Company {
   bs: string;
 }
 
-export interface UserModels {
+export interface User {
   id: string;
   name: string;
-  username: string;
+  userIame: string;
   email: string;
   phone: string;
   website: string;
