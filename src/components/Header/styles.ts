@@ -44,8 +44,10 @@ export const Subtitle = styled.Text`
 `;
 
 export const InformationContainer = styled.View`
+  flex: 1;
   flex-direction: row;
   align-items: flex-end;
+  padding-left: ${RFValue(15)}px;
 `;
 
 export const Information = styled.Text`

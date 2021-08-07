@@ -62,7 +62,7 @@ export function Home() {
         translucent
       />
       <Content>
-        <Header userName="Júnior" name="Júnior Nunes" isHome />
+        <Header userName="Júnior" name="Júnior Nunes" type="home" />
         <Posts>
           <FlatList
             data={posts}

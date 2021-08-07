@@ -17,14 +17,21 @@ import {
 interface Props {
   name: string;
   userName: string;
-  isHome?: boolean;
+  type: 'home' | 'profile' | 'post';
   isMyProfile?: boolean;
+  isNewPost?: boolean;
 }
 
-export function Header({ name, userName, isHome, isMyProfile }: Props) {
+export function Header({
+  name,
+  userName,
+  type,
+  isMyProfile,
+  isNewPost,
+}: Props) {
   return (
     <Container>
-      {isHome ? (
+      {type === 'home' && (
         <Content>
           <TxtContainer>
             <Greetings>Olá,</Greetings>
@@ -34,7 +41,8 @@ export function Header({ name, userName, isHome, isMyProfile }: Props) {
             <Feather name="log-out" color="white" size={34} />
           </BorderlessButton>
         </Content>
-      ) : (
+      )}
+      {type === 'profile' && (
         <Content>
           <TxtContainer>
             <Title> {name} </Title>
@@ -43,6 +51,23 @@ export function Header({ name, userName, isHome, isMyProfile }: Props) {
               <InformationContainer>
                 {isMyProfile && <Information>Edit</Information>}
                 <Information> Profile</Information>
+              </InformationContainer>
+            </SubtitleContainer>
+          </TxtContainer>
+        </Content>
+      )}
+      {type === 'post' && (
+        <Content>
+          <TxtContainer>
+            <Title> {name} </Title>
+            <SubtitleContainer>
+              <InformationContainer>
+                {isNewPost ? (
+                  <Information>New</Information>
+                ) : (
+                  <Information>Edit</Information>
+                )}
+                <Information> Post</Information>
               </InformationContainer>
             </SubtitleContainer>
           </TxtContainer>
