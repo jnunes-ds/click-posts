@@ -1,11 +1,20 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
+import { Header } from '../../components';
 
-import { Container, Title } from './styles';
+import { Container, Content } from './styles';
 
 export function Home() {
   return (
     <Container>
-      <Title> Hello Horld! </Title>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <Content>
+        <Header title="Júnior" isHome />
+      </Content>
     </Container>
   );
 }
