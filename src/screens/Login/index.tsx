@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
   Keyboard,
@@ -19,6 +19,8 @@ import {
 } from './styles';
 
 export function Login() {
+  const [userName, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
 
@@ -39,10 +41,19 @@ export function Login() {
             </WelcomeMessage>
             <LoginContainer>
               <LoginInput>
-                <Input iconName="mail" title="E-mail" />
+                <Input
+                  iconName="mail"
+                  title="E-mail"
+                  value={userName}
+                  onChangeText={setUsername}
+                />
               </LoginInput>
               <LoginInput>
-                <PasswordInput title="Senha" />
+                <PasswordInput
+                  title="Senha"
+                  value={password}
+                  onChangeText={setPassword}
+                />
               </LoginInput>
             </LoginContainer>
             <ButtonsContainer>
