@@ -18,4 +18,6 @@ export const Content = styled.View`
 export const Posts = styled.View`
   flex: 1;
   padding: ${RFValue(10)}px;
+  padding-top: 0;
+  padding-bottom: 0;
 `;
