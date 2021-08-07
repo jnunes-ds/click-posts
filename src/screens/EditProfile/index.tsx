@@ -66,7 +66,7 @@ export function EditProfile() {
               </CompanyInformation>
             </CompanyInformationContainer>
             <Button title="Salvar Alterações" color={success} />
-            <Button title="Modificar senha" color={subtitle} />
+            <Button title="Alterar senha" color={subtitle} />
             <Button title="Excluir conta" color={main} />
           </InformationsContainer>
         </Body>
