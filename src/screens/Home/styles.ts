@@ -12,4 +12,10 @@ export const Content = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background_secondary};
   border-radius: ${RFValue(55)}px;
+  overflow: hidden;
+`;
+
+export const Posts = styled.View`
+  flex: 1;
+  padding: ${RFValue(10)}px;
 `;
