@@ -30,7 +30,12 @@ export function EditProfile() {
         translucent
       />
       <Content>
-        <Header userName="Júnior" name="Júnior Nunes" isMyProfile />
+        <Header
+          userName="Júnior"
+          name="Júnior Nunes"
+          type="profile"
+          isMyProfile
+        />
         <Body>
           <InformationsContainer>
             <UserInformation>

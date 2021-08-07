@@ -14,7 +14,7 @@ import {
   Message,
 } from './styles';
 
-export function NewPost() {
+export function EditPost() {
   const [titleIsFocused, setTitleIsFocused] = useState(false);
   const [messageIsFocused, setMessageIsFocused] = useState(false);
   const theme = useTheme();

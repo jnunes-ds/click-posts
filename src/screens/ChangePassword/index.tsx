@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { Button, Header, Input, PasswordInput } from '../../components';
+import { Button, Header, PasswordInput } from '../../components';
 
 import {
   Container,
@@ -10,17 +10,13 @@ import {
   InformationsContainer,
   UserInformation,
   UserLabel,
-  CompanyInformationContainer,
-  CompanyTitle,
-  CompanyInformation,
-  CompanyInfoLabel,
 } from './styles';
 
 export function ChangePassword() {
   const [email, setEmail] = useState('');
 
   const theme = useTheme();
-  const { success, subtitle, main } = theme.colors;
+  const { success, subtitle } = theme.colors;
 
   return (
     <Container>
@@ -30,7 +26,12 @@ export function ChangePassword() {
         translucent
       />
       <Content>
-        <Header userName="Júnior" name="Júnior Nunes" isMyProfile />
+        <Header
+          userName="Júnior"
+          name="Júnior Nunes"
+          type="profile"
+          isMyProfile
+        />
         <Body>
           <InformationsContainer>
             <UserInformation>

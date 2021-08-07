@@ -26,7 +26,7 @@ export function Profile() {
         translucent
       />
       <Content>
-        <Header userName="Breth" name="Leane Graham" />
+        <Header userName="Breth" name="Leane Graham" type="profile" />
         <Body>
           <InformationsContainer>
             <UserInformation>
