@@ -1,5 +1,10 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { BorderlessButton } from 'react-native-gesture-handler';
+
+interface OptionContentProps {
+  isActive?: boolean;
+}
 
 export const Container = styled.View`
   flex: 1;
@@ -46,24 +51,33 @@ export const UserInfo = styled.Text`
   color: ${({ theme }) => theme.colors.subtitle};
 `;
 
-export const CompanyInformationContainer = styled.View``;
-
-export const CompanyTitle = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.primary_bold};
-  font-size: ${RFValue(26)}px;
-  color: ${({ theme }) => theme.colors.Title};
+export const ChoosingChange = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 5px;
 `;
 
-export const CompanyInformation = styled.View``;
+export const UserInformatonContainer = styled.View``;
 
-export const CompanyInfoLabel = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.primary_bold};
+export const OptionContainer = styled(BorderlessButton)``;
+
+export const OptionContent = styled.View<OptionContentProps>`
+  justify-content: center;
+  align-items: center;
+  padding: 35px;
+  padding-top: 10px;
+  margin-bottom: 5px;
+
+  ${({ isActive, theme }) =>
+    isActive &&
+    css`
+      border-bottom-width: 2px;
+      border-bottom-color: ${theme.colors.subtitle};
+    `}
+`;
+
+export const Option = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.secondary};
   font-size: ${RFValue(22)}px;
   color: ${({ theme }) => theme.colors.subtitle};
-`;
-
-export const CompanyInfo = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.secondary};
-  font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.colors.text};
 `;

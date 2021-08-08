@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { Button, Header, Input } from '../../components';
+import { Button, Header, Input, PasswordInput } from '../../components';
 
 import {
   Container,
@@ -9,18 +9,27 @@ import {
   Body,
   InformationsContainer,
   UserInformation,
-  UserLabel,
-  CompanyInformationContainer,
-  CompanyTitle,
-  CompanyInformation,
-  CompanyInfoLabel,
+  ChoosingChange,
+  UserInformatonContainer,
+  Option,
+  OptionContainer,
+  OptionContent,
 } from './styles';
 
 export function EditProfile() {
+  const [isDataActive, setIsDataActive] = useState(true);
   const [email, setEmail] = useState('');
 
   const theme = useTheme();
-  const { success, subtitle, main } = theme.colors;
+  const { success, main } = theme.colors;
+
+  function handleGoToChangeData() {
+    setIsDataActive(true);
+  }
+
+  function handleGoToChangePassword() {
+    setIsDataActive(false);
+  }
 
   return (
     <Container>
@@ -38,40 +47,66 @@ export function EditProfile() {
         />
         <Body>
           <InformationsContainer>
-            <UserInformation>
-              <UserLabel>Email</UserLabel>
-              <Input
-                iconName="mail"
-                title="Email"
-                value={email}
-                onChangeText={setEmail}
-              />
-            </UserInformation>
-            <UserInformation>
-              <UserLabel>WebSite</UserLabel>
-              <Input iconName="mail" title="Email" />
-            </UserInformation>
-            <UserInformation>
-              <UserLabel>Phone</UserLabel>
-              <Input iconName="mail" title="Email" />
-            </UserInformation>
-            <CompanyInformationContainer>
-              <CompanyTitle>Company</CompanyTitle>
-              <CompanyInformation>
-                <CompanyInfoLabel>Name:</CompanyInfoLabel>
-                <Input iconName="mail" title="Email" />
-              </CompanyInformation>
-              <CompanyInformation>
-                <CompanyInfoLabel>Catch Phrase:</CompanyInfoLabel>
-                <Input iconName="mail" title="Email" />
-              </CompanyInformation>
-              <CompanyInformation>
-                <CompanyInfoLabel>BS:</CompanyInfoLabel>
-                <Input iconName="mail" title="Email" />
-              </CompanyInformation>
-            </CompanyInformationContainer>
+            <ChoosingChange>
+              <OptionContainer onPress={handleGoToChangeData}>
+                <OptionContent isActive={isDataActive}>
+                  <Option>Dados</Option>
+                </OptionContent>
+              </OptionContainer>
+              <OptionContainer onPress={handleGoToChangePassword}>
+                <OptionContent isActive={!isDataActive}>
+                  <Option>Senha</Option>
+                </OptionContent>
+              </OptionContainer>
+            </ChoosingChange>
+            {isDataActive ? (
+              <UserInformatonContainer>
+                <UserInformation>
+                  <Input
+                    iconName="user"
+                    title="Name"
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+                </UserInformation>
+                <UserInformation>
+                  <Input
+                    iconName="smile"
+                    title="Apelido"
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+                </UserInformation>
+                <UserInformation>
+                  <Input
+                    iconName="mail"
+                    title="E-mail"
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+                </UserInformation>
+                <UserInformation>
+                  <Input iconName="mail" title="Site" />
+                </UserInformation>
+                <UserInformation>
+                  <Input iconName="mail" title="Telefone" />
+                </UserInformation>
+              </UserInformatonContainer>
+            ) : (
+              <UserInformatonContainer>
+                <UserInformation>
+                  <PasswordInput title="Senha atual" />
+                </UserInformation>
+                <UserInformation>
+                  <PasswordInput title="Nova senha" />
+                </UserInformation>
+                <UserInformation>
+                  <PasswordInput title="Repita a nova senha" />
+                </UserInformation>
+              </UserInformatonContainer>
+            )}
+
             <Button title="Salvar Alterações" color={success} />
-            <Button title="Alterar senha" color={subtitle} />
             <Button title="Excluir conta" color={main} />
           </InformationsContainer>
         </Body>
