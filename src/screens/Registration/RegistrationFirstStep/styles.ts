@@ -1,5 +1,9 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+
+interface BulletProps {
+  isActive?: boolean;
+}
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.shape};
@@ -12,7 +16,34 @@ export const Content = styled.View`
   padding-bottom: ${RFValue(157)}px;
 `;
 
-export const WelcomeMessage = styled.View`
+export const RegistrationHeader = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const BulletsContainer = styled.View`
+  justify-content: space-around;
+  width: 50px;
+  height: 100px;
+`;
+
+export const Bullet = styled.View<BulletProps>`
+  width: ${RFValue(30)}px;
+  height: ${RFValue(30)}px;
+  border-radius: ${RFValue(15)}px;
+
+  ${({ isActive, theme }) =>
+    isActive
+      ? css`
+          background-color: ${theme.colors.subtitle};
+        `
+      : css`
+          background-color: ${theme.colors.background_secondary};
+        `}
+`;
+
+export const InformationMessage = styled.View`
   margin-bottom: ${RFValue(44)}px;
 `;
 
@@ -29,11 +60,11 @@ export const Subtitle = styled.Text`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-export const LoginContainer = styled.View`
+export const RegistrationContainer = styled.View`
   justify-content: space-between;
 `;
 
-export const LoginInput = styled.View`
+export const RegistrationInput = styled.View`
   margin-top: 9px;
 `;
 
