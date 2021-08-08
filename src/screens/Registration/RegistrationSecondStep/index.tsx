@@ -5,60 +5,80 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useTheme } from 'styled-components';
-import { Button, Input, PasswordInput } from '../../../components';
+import { useNavigation } from '@react-navigation/native';
+import { BackButton, Button, Input, PasswordInput } from '../../../components';
 
 import {
   Container,
   Content,
   Title,
   Subtitle,
-  WelcomeMessage,
-  LoginContainer,
-  LoginInput,
+  InformationMessage,
+  RegistrationContainer,
+  RegistrationInput,
   ButtonsContainer,
+  RegistrationHeader,
+  BulletsContainer,
+  Bullet,
 } from './styles';
 
 export function RegistrationSecondStep() {
+  const [name, SetName] = useState('');
   const [userName, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
   const theme = useTheme();
-  const { subtitle, success } = theme.colors;
+  const { subtitle, text } = theme.colors;
+
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
+  function handleRegister() {}
+
+  function HandleCancel() {
+    navigation.navigate('Login');
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+          <BackButton onPress={handleGoBack} />
           <Content>
-            <WelcomeMessage>
-              <Title>
-                Comece a {'\n'}
-                postar agora!
-              </Title>
-              <Subtitle>
-                Entre com seu {'\n'}
-                logn para continuar
-              </Subtitle>
-            </WelcomeMessage>
-            <LoginContainer>
-              <LoginInput>
-                <Input
-                  iconName="mail"
-                  title="E-mail"
-                  value={userName}
-                  onChangeText={setUsername}
-                />
-              </LoginInput>
-              <LoginInput>
-                <PasswordInput
-                  title="Senha"
-                  value={password}
-                  onChangeText={setPassword}
-                />
-              </LoginInput>
-            </LoginContainer>
+            <RegistrationHeader>
+              <InformationMessage>
+                <Title>
+                  Vamos {'\n'}
+                  Começar!
+                </Title>
+                <Subtitle>
+                  Informe os seus dados {'\n'}
+                  pessoais para continuar
+                </Subtitle>
+              </InformationMessage>
+              <BulletsContainer>
+                <Bullet />
+                <Bullet isActive />
+              </BulletsContainer>
+            </RegistrationHeader>
+            <RegistrationContainer>
+              <RegistrationInput>
+                <PasswordInput title="Escolha uma senha" />
+              </RegistrationInput>
+              <RegistrationInput>
+                <PasswordInput title="Repita a senha" />
+              </RegistrationInput>
+            </RegistrationContainer>
             <ButtonsContainer>
-              <Button title="Login" color={success} />
-              <Button title="Criar conta" color={subtitle} />
+              <Button
+                title="Cadastrar"
+                color={subtitle}
+                onPress={handleRegister}
+              />
+              <Button title="Cancelar" color={text} onPress={HandleCancel} />
             </ButtonsContainer>
           </Content>
         </Container>

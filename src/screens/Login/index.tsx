@@ -28,6 +28,8 @@ export function Login() {
 
   const navigation = useNavigation();
 
+  function handleSingIn() {}
+
   function handleGoToRegistration() {
     navigation.navigate('RegistrationFirstStep');
   }
