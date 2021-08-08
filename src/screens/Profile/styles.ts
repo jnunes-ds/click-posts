@@ -20,7 +20,7 @@ export const Body = styled.View`
   padding: ${RFValue(10)}px;
 `;
 
-export const InformationsContainer = styled.View`
+export const InformationsContainer = styled.ScrollView`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.shape};
   border-radius: 10px;

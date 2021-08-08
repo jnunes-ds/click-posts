@@ -1,6 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { Header } from '../../components';
+import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'styled-components';
+import { Header, Button } from '../../components';
 
 import {
   Container,
@@ -18,6 +20,14 @@ import {
 } from './styles';
 
 export function Profile() {
+  const theme = useTheme();
+  const { text } = theme.colors;
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   return (
     <Container>
       <StatusBar
@@ -41,23 +51,7 @@ export function Profile() {
               <UserLabel>Phone</UserLabel>
               <UserInfo>1-770-736-8031 x56442</UserInfo>
             </UserInformation>
-            <CompanyInformationContainer>
-              <CompanyTitle>Company</CompanyTitle>
-              <CompanyInformation>
-                <CompanyInfoLabel>Name:</CompanyInfoLabel>
-                <CompanyInfo>Romaguera-Crona</CompanyInfo>
-              </CompanyInformation>
-              <CompanyInformation>
-                <CompanyInfoLabel>Catch Phrase:</CompanyInfoLabel>
-                <CompanyInfo>
-                  Multi-layered client-server neural-net
-                </CompanyInfo>
-              </CompanyInformation>
-              <CompanyInformation>
-                <CompanyInfoLabel>BS:</CompanyInfoLabel>
-                <CompanyInfo>harness real-time e-markets</CompanyInfo>
-              </CompanyInformation>
-            </CompanyInformationContainer>
+            <Button title="Voltar" color={text} onPress={handleGoBack} />
           </InformationsContainer>
         </Body>
       </Content>

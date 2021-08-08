@@ -1,5 +1,9 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+
+interface NameProps {
+  isMyPost?: boolean;
+}
 
 export const Container = styled.View`
   width: 100%;
@@ -17,11 +21,15 @@ export const Header = styled.View`
   width: 100%;
 `;
 
-export const Name = styled.Text`
+export const Name = styled.Text<NameProps>`
   font-family: ${({ theme }) => theme.fonts.primary_bold};
   font-size: ${RFValue(22)}px;
   color: ${({ theme }) => theme.colors.Title};
-  text-decoration: underline;
+  ${({ isMyPost }) =>
+    !isMyPost &&
+    css`
+      text-decoration: underline;
+    `}
 `;
 
 export const Content = styled.View`
