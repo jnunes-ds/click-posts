@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -6,7 +5,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useTheme } from 'styled-components';
-import { Button, Input, PasswordInput } from '../../components';
+import { Button, Input, PasswordInput } from '../../../components';
 
 import {
   Container,
@@ -19,18 +18,11 @@ import {
   ButtonsContainer,
 } from './styles';
 
-export function Login() {
+export function RegistrationSecondStep() {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
-
-  const navigation = useNavigation();
-
-  function handleGoToRegistration() {
-    navigation.navigate('RegistrationFirstStep');
-  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -66,11 +58,7 @@ export function Login() {
             </LoginContainer>
             <ButtonsContainer>
               <Button title="Login" color={success} />
-              <Button
-                title="Criar conta gratuita"
-                color={subtitle}
-                onPress={handleGoToRegistration}
-              />
+              <Button title="Criar conta" color={subtitle} />
             </ButtonsContainer>
           </Content>
         </Container>

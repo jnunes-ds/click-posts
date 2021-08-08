@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -6,7 +5,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useTheme } from 'styled-components';
-import { Button, Input, PasswordInput } from '../../components';
+import { useNavigation } from '@react-navigation/native';
+import { BackButton, Button, Input, PasswordInput } from '../../../components';
 
 import {
   Container,
@@ -19,32 +19,33 @@ import {
   ButtonsContainer,
 } from './styles';
 
-export function Login() {
+export function RegistrationFirstStep() {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const theme = useTheme();
-  const { subtitle, success } = theme.colors;
+  const { subtitle, main } = theme.colors;
 
   const navigation = useNavigation();
 
-  function handleGoToRegistration() {
-    navigation.navigate('RegistrationFirstStep');
+  function handleGoBack() {
+    navigation.goBack();
   }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+          <BackButton onPress={handleGoBack} />
           <Content>
             <WelcomeMessage>
               <Title>
-                Comece a {'\n'}
-                postar agora!
+                Vamos {'\n'}
+                Começar!
               </Title>
               <Subtitle>
-                Entre com seu {'\n'}
-                logn para continuar
+                Informe os seus dados {'\n'}
+                pessoais para continuar
               </Subtitle>
             </WelcomeMessage>
             <LoginContainer>
@@ -65,12 +66,8 @@ export function Login() {
               </LoginInput>
             </LoginContainer>
             <ButtonsContainer>
-              <Button title="Login" color={success} />
-              <Button
-                title="Criar conta gratuita"
-                color={subtitle}
-                onPress={handleGoToRegistration}
-              />
+              <Button title="Próximo passo" color={subtitle} />
+              <Button title="Cancelar" color={main} />
             </ButtonsContainer>
           </Content>
         </Container>
