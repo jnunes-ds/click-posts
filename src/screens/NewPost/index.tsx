@@ -69,7 +69,6 @@ export function NewPost() {
               />
             </NewPostContent>
             <Button title="Enviar" color={success} />
-            <Button title="Cancelar" color={subtitle} />
           </NewPostContainer>
         </Body>
       </Content>

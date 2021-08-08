@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
 import { Button, Header } from '../../components';
 
 import {
@@ -17,8 +18,11 @@ import {
 export function EditPost() {
   const [titleIsFocused, setTitleIsFocused] = useState(false);
   const [messageIsFocused, setMessageIsFocused] = useState(false);
+
   const theme = useTheme();
   const { success, subtitle } = theme.colors;
+
+  const navigation = useNavigation();
 
   function handlerTitleFocus() {
     setTitleIsFocused(true);
@@ -34,6 +38,10 @@ export function EditPost() {
 
   function handlerMessageBlur() {
     setMessageIsFocused(false);
+  }
+
+  function handleGoBack() {
+    navigation.goBack();
   }
 
   return (
@@ -69,7 +77,7 @@ export function EditPost() {
               />
             </NewPostContent>
             <Button title="Enviar" color={success} />
-            <Button title="Cancelar" color={subtitle} />
+            <Button title="Cancelar" color={subtitle} onPress={handleGoBack} />
           </NewPostContainer>
         </Body>
       </Content>

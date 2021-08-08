@@ -39,6 +39,10 @@ export function PostCard({ data }: Props) {
     navigation.navigate('Profile');
   }
 
+  function handleGoToEditPost() {
+    navigation.navigate('EditPost');
+  }
+
   return (
     <Container>
       <Header>
@@ -50,7 +54,11 @@ export function PostCard({ data }: Props) {
           </BorderlessButton>
         )}
 
-        {data.isMyPost && <Feather name="edit" color={subtitle} size={24} />}
+        {data.isMyPost && (
+          <BorderlessButton onPress={handleGoToEditPost}>
+            <Feather name="edit" color={subtitle} size={24} />
+          </BorderlessButton>
+        )}
       </Header>
       <Content>
         <Title> {data.title} </Title>
