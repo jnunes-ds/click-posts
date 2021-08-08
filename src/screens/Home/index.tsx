@@ -1,58 +1,40 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header, PostCard } from '../../components';
+import { usePosts } from '../../hooks/Posts';
+import { useUsers } from '../../hooks/Users';
+import api from '../../services/api';
 
 import { Container, Content, Posts } from './styles';
 
 interface Post {
+  userID: string;
   id: string;
-  userName: string;
   title: string;
-  message: string;
+  body: string;
   date?: string;
-  isMyPost: boolean;
+  isMyPost?: boolean;
 }
 
 export function Home() {
-  const posts: Post[] = [
-    {
-      id: '1',
-      userName: 'Júnior',
-      title: 'Por que nossas postagens parecem tão detro de um padrão?',
-      message:
-        'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
-      date: '07/08/2021',
-      isMyPost: true,
-    },
-    {
-      id: '2',
-      userName: 'Larissa',
-      title:
-        'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
-      message:
-        'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
-      isMypost: false,
-    },
-    {
-      id: '3',
-      userName: 'Lis',
-      title:
-        'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
-      message:
-        'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
-      isMypost: false,
-    },
-    {
-      id: '4',
-      userName: 'Nunes',
-      title:
-        'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
-      message:
-        'Infelizmente venho reparando no padrão de postagem dessa rede, é importante lembrarmos que, enquanto eu sou uma pessoa de verdade, você é um mero crud pra eu poder gerar o meu designe bonitinho.',
-      isMypost: false,
-    },
-  ] as Post[];
+  const [loading, setLoading] = useState(true);
+
+  const { getPosts, posts } = usePosts();
+  const { getUsers, users } = useUsers();
+
+  useEffect(() => {
+    // eslint-disable-next-line prefer-const
+    let isPostsMounted = true;
+    async function fetchPosts() {
+      setLoading(true);
+      getUsers();
+      getPosts();
+      setLoading(false);
+    }
+
+    fetchPosts();
+  }, []);
 
   return (
     <Container>
@@ -64,12 +46,16 @@ export function Home() {
       <Content>
         <Header userName="Júnior" name="Júnior Nunes" type="home" />
         <Posts>
-          <FlatList
-            data={posts}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => <PostCard data={item} />}
-            showsVerticalScrollIndicator={false}
-          />
+          {loading ? (
+            <Text>Loading . . .</Text>
+          ) : (
+            <FlatList
+              data={posts}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => <PostCard postData={item} />}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </Posts>
       </Content>
     </Container>

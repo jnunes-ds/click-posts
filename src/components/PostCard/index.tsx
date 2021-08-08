@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Feather } from '@expo/vector-icons';
 
 import { useTheme } from 'styled-components';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
+import { User } from '../../dtos/UserDTO';
 import {
   Container,
   Header,
@@ -16,20 +17,20 @@ import {
   Date,
 } from './styles';
 
-interface Data {
+interface PostData {
+  userID: string;
   id: string;
-  userName: string;
   title: string;
-  message: string;
+  body: string;
   date?: string;
-  isMyPost: boolean;
+  isMyPost?: boolean;
 }
 
 interface Props {
-  data: Data;
+  postData: PostData;
 }
 
-export function PostCard({ data }: Props) {
+export function PostCard({ postData }: Props) {
   const theme = useTheme();
   const { subtitle } = theme.colors;
 
@@ -46,26 +47,26 @@ export function PostCard({ data }: Props) {
   return (
     <Container>
       <Header>
-        {data.isMyPost ? (
-          <Name isMyPost> {data.userName} </Name>
+        {postData.isMyPost ? (
+          <Name isMyPost> Nome </Name>
         ) : (
           <BorderlessButton onPress={handleGoToProfile}>
-            <Name> {data.userName} </Name>
+            <Name> Nome </Name>
           </BorderlessButton>
         )}
 
-        {data.isMyPost && (
+        {postData.isMyPost && (
           <BorderlessButton onPress={handleGoToEditPost}>
             <Feather name="edit" color={subtitle} size={24} />
           </BorderlessButton>
         )}
       </Header>
       <Content>
-        <Title> {data.title} </Title>
-        <Message> {data.message} </Message>
+        <Title> {postData.title} </Title>
+        <Message> {postData.body} </Message>
       </Content>
       <Footer>
-        <Date> {data.date} </Date>
+        {postData.date ? <Date>{postData.date}</Date> : <Date>05/08/2021</Date>}
       </Footer>
     </Container>
   );
