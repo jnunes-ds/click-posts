@@ -17,12 +17,20 @@ function UsersProvider({ children }: PostsProviderProps) {
   const [users, setUsers] = useState<User[]>([] as User[]);
 
   async function getUsers() {
+    // eslint-disable-next-line prefer-const
+    let isMounted = true;
     try {
       const response = await api.get('/users');
-      setUsers(response.data);
+      if (isMounted) {
+        setUsers(response.data);
+      }
     } catch (error) {
       throw new Error(String(error));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }
 
   return (

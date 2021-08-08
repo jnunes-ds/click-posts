@@ -7,7 +7,7 @@ interface Company {
 export interface User {
   id: string;
   name: string;
-  userIame: string;
+  username: string;
   email: string;
   phone: string;
   website: string;

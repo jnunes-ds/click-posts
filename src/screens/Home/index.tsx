@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header, PostCard } from '../../components';
+import { PostDTO } from '../../dtos/PostDTO';
 import { usePosts } from '../../hooks/Posts';
 import { useUsers } from '../../hooks/Users';
 import api from '../../services/api';
 
 import { Container, Content, Posts } from './styles';
 
-interface Post {
-  userID: string;
-  id: string;
-  title: string;
-  body: string;
+interface Post extends PostDTO {
   date?: string;
   isMyPost?: boolean;
 }

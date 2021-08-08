@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useState, useContext } from 'react';
-import { PostModel as Post } from '../dtos/PostDTO';
+import { PostDTO as Post } from '../dtos/PostDTO';
 import api from '../services/api';
 
 interface PostsContextData {
@@ -17,12 +17,20 @@ function PostsProvider({ children }: PostsProviderProps) {
   const [posts, setPosts] = useState<Post[]>([] as Post[]);
 
   async function getPosts() {
+    // eslint-disable-next-line prefer-const
+    let isMounted = true;
     try {
       const response = await api.get('/posts');
-      setPosts(response.data);
+      if (isMounted) {
+        setPosts(response.data);
+      }
     } catch (error) {
       throw new Error(String(error));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }
 
   return (

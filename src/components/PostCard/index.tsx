@@ -16,9 +16,10 @@ import {
   Footer,
   Date,
 } from './styles';
+import { useUsers } from '../../hooks/Users';
 
 interface PostData {
-  userID: string;
+  userId: string;
   id: string;
   title: string;
   body: string;
@@ -31,8 +32,11 @@ interface Props {
 }
 
 export function PostCard({ postData }: Props) {
+  const [user, setUser] = useState<User>({} as User);
   const theme = useTheme();
   const { subtitle } = theme.colors;
+
+  const { users } = useUsers();
 
   const navigation = useNavigation();
 
@@ -44,14 +48,29 @@ export function PostCard({ postData }: Props) {
     navigation.navigate('EditPost');
   }
 
+  useEffect(() => {
+    // eslint-disable-next-line prefer-const
+    let isMounted = true;
+    function getAtualUser() {
+      const filteredUsers = users.filter(item => item.id === postData.userId);
+
+      setUser(filteredUsers[0]);
+    }
+    getAtualUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <Container>
       <Header>
         {postData.isMyPost ? (
-          <Name isMyPost> Nome </Name>
+          <Name isMyPost> {user.username} </Name>
         ) : (
           <BorderlessButton onPress={handleGoToProfile}>
-            <Name> Nome </Name>
+            <Name> {user.username} </Name>
           </BorderlessButton>
         )}
 
