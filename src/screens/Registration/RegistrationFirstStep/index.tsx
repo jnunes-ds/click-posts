@@ -50,13 +50,7 @@ export function RegistrationFirstStep() {
 
       await schema.validate({ name, username, email });
 
-      const newUser = {
-        name,
-        username,
-        email,
-      };
-
-      navigation.navigate('RegistrationSecondStep', newUser);
+      navigation.navigate('RegistrationSecondStep', { name, username, email });
     } catch (error) {
       const e = error as Yup.ValidationError;
       Alert.alert('Atenção', `${e.message}`);

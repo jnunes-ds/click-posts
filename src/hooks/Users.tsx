@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useState, useContext } from 'react';
 import { Alert } from 'react-native';
-import { v4 as uuid } from 'uuid';
+import uuid from 'react-native-uuid';
 import { User } from '../dtos/UserDTO';
 import api from '../services/api';
 
@@ -19,7 +19,7 @@ interface PostsContextData {
   // eslint-disable-next-line no-unused-vars
   createNewUser({ email, username, name, password }: NewUser): void;
   // eslint-disable-next-line no-unused-vars
-  logIn({ email, password }: Auth): void;
+  singIn({ email, password }: Auth): void;
   user: User;
 }
 
@@ -83,7 +83,7 @@ function UsersProvider({ children }: PostsProviderProps) {
       }
 
       const newUser = {
-        id: uuid(),
+        id: uuid.v4(),
         email,
         username,
         name,
@@ -91,12 +91,14 @@ function UsersProvider({ children }: PostsProviderProps) {
       };
 
       await api.post('/users', newUser);
+
+      Alert.alert('Parabéns!', 'Usuário criado com sucesso!');
     } catch (error) {
       throw new Error(String(error));
     }
   }
 
-  async function logIn({ email, password }: Auth): Promise<void> {
+  async function singIn({ email, password }: Auth): Promise<void> {
     await getUsers();
     const filteredUsers = users.filter(item => item.email === email);
 
@@ -106,11 +108,12 @@ function UsersProvider({ children }: PostsProviderProps) {
       return;
     }
     setUser(filteredUsers[0]);
+    console.log(user);
   }
 
   return (
     <UsersContext.Provider
-      value={{ users, getUsers, createNewUser, logIn, user }}
+      value={{ users, getUsers, createNewUser, singIn, user }}
     >
       {children}
     </UsersContext.Provider>

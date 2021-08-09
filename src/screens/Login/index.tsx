@@ -4,9 +4,12 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import { useTheme } from 'styled-components';
+import * as Yup from 'yup';
 import { Button, Input, PasswordInput } from '../../components';
+import { useUsers } from '../../hooks/Users';
 
 import {
   Container,
@@ -20,15 +23,34 @@ import {
 } from './styles';
 
 export function Login() {
-  const [userName, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { singIn } = useUsers();
 
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
 
   const navigation = useNavigation();
 
-  function handleSingIn() {}
+  async function handleSingIn() {
+    try {
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required('Informe o e-mail!')
+          .email('Digite um e-mail válido!'),
+        password: Yup.string().required('Digite a senha!'),
+      });
+
+      await schema.validate({ email, password });
+      await singIn({ email, password });
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert('Atenção!', error.message);
+      }
+      console.log(error);
+    }
+  }
 
   function handleGoToRegistration() {
     navigation.navigate('RegistrationFirstStep');
@@ -54,8 +76,8 @@ export function Login() {
                 <Input
                   iconName="mail"
                   title="E-mail"
-                  value={userName}
-                  onChangeText={setUsername}
+                  value={email}
+                  onChangeText={setEmail}
                 />
               </LoginInput>
               <LoginInput>
@@ -67,7 +89,7 @@ export function Login() {
               </LoginInput>
             </LoginContainer>
             <ButtonsContainer>
-              <Button title="Login" color={success} />
+              <Button title="Login" color={success} onPress={handleSingIn} />
               <Button
                 title="Criar conta gratuita"
                 color={subtitle}

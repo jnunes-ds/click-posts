@@ -3,9 +3,12 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Yup from 'yup';
+import uuid from 'react-native-uuid';
 
 import { BackButton, Button, PasswordInput } from '../../../components';
 
@@ -22,6 +25,13 @@ import {
   BulletsContainer,
   Bullet,
 } from './styles';
+import { useUsers } from '../../../hooks/Users';
+
+interface Params {
+  name: string;
+  username: string;
+  email: string;
+}
 
 export function RegistrationSecondStep() {
   const [password, setPassword] = useState('');
@@ -30,13 +40,39 @@ export function RegistrationSecondStep() {
   const theme = useTheme();
   const { subtitle, text } = theme.colors;
 
+  const route = useRoute();
+  const { name, username, email } = route.params as Params;
+
+  const { createNewUser } = useUsers();
+
   const navigation = useNavigation();
 
   function handleGoBack() {
     navigation.goBack();
   }
 
-  function handleRegister() {}
+  async function handleRegister() {
+    try {
+      const schema = Yup.object().shape({
+        passwordRepeat: Yup.string().required(
+          'É necessário repetir a senha para continuar.',
+        ),
+        password: Yup.string().required('Senha é obrigatória!'),
+      });
+
+      await schema.validate({ password, passwordRepeat });
+
+      if (password !== passwordRepeat) {
+        throw new Error('A senha  repetida deve ser idêntica a anterior.');
+      }
+
+      await createNewUser({ name, username, email, password });
+      navigation.navigate('Login');
+    } catch (error) {
+      const e = error as Yup.ValidationError;
+      Alert.alert('Atenção', e.message);
+    }
+  }
 
   function HandleCancel() {
     navigation.navigate('Login');
@@ -66,10 +102,18 @@ export function RegistrationSecondStep() {
             </RegistrationHeader>
             <RegistrationContainer>
               <RegistrationInput>
-                <PasswordInput title="Escolha uma senha" />
+                <PasswordInput
+                  title="Escolha uma senha"
+                  value={password}
+                  onChangeText={setPassword}
+                />
               </RegistrationInput>
               <RegistrationInput>
-                <PasswordInput title="Repita a senha" />
+                <PasswordInput
+                  title="Repita a senha"
+                  value={passwordRepeat}
+                  onChangeText={setPasswordRepeat}
+                />
               </RegistrationInput>
             </RegistrationContainer>
             <ButtonsContainer>
