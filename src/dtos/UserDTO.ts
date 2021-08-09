@@ -1,9 +1,3 @@
-interface Company {
-  name: string;
-  catchPhrase: string;
-  bs: string;
-}
-
 export interface User {
   id: string;
   name: string;
@@ -11,5 +5,4 @@ export interface User {
   email: string;
   phone: string;
   website: string;
-  company: Company;
 }
