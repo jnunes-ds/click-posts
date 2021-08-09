@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
+import * as Yup from 'yup';
+import uuid from 'react-native-uuid';
 import { Button, Header } from '../../components';
+import { usePosts } from '../../hooks/Posts';
+import { useUsers } from '../../hooks/Users';
 
 import {
   Container,
@@ -17,8 +21,14 @@ import {
 export function NewPost() {
   const [titleIsFocused, setTitleIsFocused] = useState(false);
   const [messageIsFocused, setMessageIsFocused] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+
   const theme = useTheme();
   const { success, subtitle } = theme.colors;
+
+  const { sendPost } = usePosts();
+  const { user } = useUsers();
 
   function handlerTitleFocus() {
     setTitleIsFocused(true);
@@ -34,6 +44,28 @@ export function NewPost() {
 
   function handlerMessageBlur() {
     setMessageIsFocused(false);
+  }
+
+  async function handleSendPost() {
+    try {
+      const schema = Yup.object().shape({
+        title: Yup.string().required('Título é obrigatório!'),
+        body: Yup.string().required('É obrigatório escrever uma mensagem!'),
+      });
+
+      const userId = user.id;
+      await schema.validate({ title, body });
+
+      await sendPost({ title, body, userId });
+      setTitle('');
+      setBody('');
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert('Atenção', error.message);
+      }
+
+      console.log(error);
+    }
   }
 
   return (
@@ -54,6 +86,8 @@ export function NewPost() {
                 placeholder="Está é uma nova mensagem"
                 onFocus={handlerTitleFocus}
                 onBlur={handlerTitleBlur}
+                value={title}
+                onChangeText={setTitle}
               />
             </NewPostContent>
             <NewPostContent>
@@ -66,9 +100,11 @@ export function NewPost() {
                 maxLength={100}
                 numberOfLines={5}
                 autoCorrect={false}
+                value={body}
+                onChangeText={setBody}
               />
             </NewPostContent>
-            <Button title="Enviar" color={success} />
+            <Button title="Enviar" color={success} onPress={handleSendPost} />
           </NewPostContainer>
         </Body>
       </Content>

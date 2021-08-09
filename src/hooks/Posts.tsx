@@ -1,10 +1,21 @@
 import React, { createContext, ReactNode, useState, useContext } from 'react';
+import { Alert } from 'react-native';
+import uuid from 'react-native-uuid';
 import { PostDTO as Post } from '../dtos/PostDTO';
 import api from '../services/api';
+
+interface PostProps {
+  id?: string;
+  userId: string;
+  title: string;
+  body: string;
+}
 
 interface PostsContextData {
   posts: Post[];
   getPosts(): void;
+  // eslint-disable-next-line no-unused-vars
+  sendPost({ userId, title, body }: PostProps): Promise<void>;
 }
 
 interface PostsProviderProps {
@@ -33,8 +44,27 @@ function PostsProvider({ children }: PostsProviderProps) {
     };
   }
 
+  async function sendPost({ userId, title, body }: PostProps) {
+    try {
+      const newId = uuid.v4();
+
+      const newPost = {
+        id: newId,
+        userId,
+        title,
+        body,
+      };
+
+      await api.post('/posts', newPost);
+      Alert.alert('Post efetuado com sucesso!');
+    } catch (error) {
+      const e = error as string;
+      throw new Error(e);
+    }
+  }
+
   return (
-    <PostsContext.Provider value={{ posts, getPosts }}>
+    <PostsContext.Provider value={{ posts, getPosts, sendPost }}>
       {children}
     </PostsContext.Provider>
   );

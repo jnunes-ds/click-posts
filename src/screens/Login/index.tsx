@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   KeyboardAvoidingView,
   Keyboard,
@@ -26,7 +26,7 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { singIn } = useUsers();
+  const { singIn, getUsers } = useUsers();
 
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
@@ -55,6 +55,10 @@ export function Login() {
   function handleGoToRegistration() {
     navigation.navigate('RegistrationFirstStep');
   }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
