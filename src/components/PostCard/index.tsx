@@ -14,7 +14,7 @@ import {
   Title,
   Message,
   Footer,
-  Date,
+  DateContainer,
 } from './styles';
 import { useUsers } from '../../hooks/Users';
 
@@ -33,6 +33,7 @@ interface Props {
 
 export function PostCard({ postData }: Props) {
   const [user, setUser] = useState<User>({} as User);
+
   const theme = useTheme();
   const { subtitle } = theme.colors;
 
@@ -41,7 +42,7 @@ export function PostCard({ postData }: Props) {
   const navigation = useNavigation();
 
   function handleGoToProfile() {
-    navigation.navigate('Profile');
+    navigation.navigate('Profile', { user });
   }
 
   function handleGoToEditPost() {
@@ -85,7 +86,11 @@ export function PostCard({ postData }: Props) {
         <Message> {postData.body} </Message>
       </Content>
       <Footer>
-        {postData.date ? <Date>{postData.date}</Date> : <Date>05/08/2021</Date>}
+        {postData.date ? (
+          <DateContainer>{postData.date}</DateContainer>
+        ) : (
+          <DateContainer>05/08/2021</DateContainer>
+        )}
       </Footer>
     </Container>
   );

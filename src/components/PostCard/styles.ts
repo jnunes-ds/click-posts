@@ -58,7 +58,7 @@ export const Footer = styled.View`
   width: 100%;
 `;
 
-export const Date = styled.Text`
+export const DateContainer = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_bold};
   font-size: ${RFValue(15)}px;
   color: ${({ theme }) => theme.colors.subtitle};

@@ -42,25 +42,3 @@ export const UserInfo = styled.Text`
   font-size: ${RFValue(22)}px;
   color: ${({ theme }) => theme.colors.subtitle};
 `;
-
-export const CompanyInformationContainer = styled.View``;
-
-export const CompanyTitle = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.primary_bold};
-  font-size: ${RFValue(26)}px;
-  color: ${({ theme }) => theme.colors.Title};
-`;
-
-export const CompanyInformation = styled.View``;
-
-export const CompanyInfoLabel = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.primary_bold};
-  font-size: ${RFValue(22)}px;
-  color: ${({ theme }) => theme.colors.subtitle};
-`;
-
-export const CompanyInfo = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.secondary};
-  font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.colors.text};
-`;

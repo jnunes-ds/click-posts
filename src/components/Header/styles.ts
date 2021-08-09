@@ -18,7 +18,9 @@ export const Content = styled.View`
   align-items: center;
 `;
 
-export const TxtContainer = styled.View``;
+export const TxtContainer = styled.View`
+  width: 100%;
+`;
 
 export const Greetings = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_regular};
