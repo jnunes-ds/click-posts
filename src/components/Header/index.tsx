@@ -13,6 +13,7 @@ import {
   InformationContainer,
   Information,
 } from './styles';
+import { useUsers } from '../../hooks/Users';
 
 interface Props {
   name: string;
@@ -29,6 +30,12 @@ export function Header({
   isMyProfile,
   isNewPost,
 }: Props) {
+  const { singOut, user } = useUsers();
+
+  function handleSingOut() {
+    singOut();
+  }
+
   return (
     <Container>
       {type === 'home' && (
@@ -37,7 +44,7 @@ export function Header({
             <Greetings>Olá,</Greetings>
             <Title> {userName} </Title>
           </TxtContainer>
-          <BorderlessButton onPress={() => {}}>
+          <BorderlessButton onPress={handleSingOut}>
             <Feather name="log-out" color="white" size={34} />
           </BorderlessButton>
         </Content>

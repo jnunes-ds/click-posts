@@ -43,7 +43,7 @@ export function Login() {
       });
 
       await schema.validate({ email, password });
-      await singIn({ email, password });
+      singIn({ email, password });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Atenção!', error.message);

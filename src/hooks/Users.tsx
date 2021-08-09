@@ -20,6 +20,7 @@ interface PostsContextData {
   createNewUser({ email, username, name, password }: NewUser): void;
   // eslint-disable-next-line no-unused-vars
   singIn({ email, password }: Auth): void;
+  singOut(): void;
   user: User;
 }
 
@@ -111,9 +112,13 @@ function UsersProvider({ children }: PostsProviderProps) {
     console.log(user);
   }
 
+  function singOut() {
+    setUser({} as User);
+  }
+
   return (
     <UsersContext.Provider
-      value={{ users, getUsers, createNewUser, singIn, user }}
+      value={{ users, getUsers, createNewUser, singIn, singOut, user }}
     >
       {children}
     </UsersContext.Provider>
