@@ -96,8 +96,22 @@ function UsersProvider({ children }: PostsProviderProps) {
     }
   }
 
+  async function logIn({ email, password }: Auth): Promise<void> {
+    await getUsers();
+    const filteredUsers = users.filter(item => item.email === email);
+
+    if (filteredUsers[0].password !== password) {
+      Alert.alert('Erro de login', 'Login ou senha incorreto');
+
+      return;
+    }
+    setUser(filteredUsers[0]);
+  }
+
   return (
-    <UsersContext.Provider value={{ users, getUsers, createNewUser }}>
+    <UsersContext.Provider
+      value={{ users, getUsers, createNewUser, logIn, user }}
+    >
       {children}
     </UsersContext.Provider>
   );
