@@ -3,6 +3,7 @@ import { Alert, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import * as Yup from 'yup';
 import uuid from 'react-native-uuid';
+import { format, compareAsc } from 'date-fns';
 import { Button, Header } from '../../components';
 import { usePosts } from '../../hooks/Posts';
 import { useUsers } from '../../hooks/Users';
@@ -54,9 +55,12 @@ export function NewPost() {
       });
 
       const userId = user.id;
+      const newDate = new Date();
+      const formattedDate = format(newDate, 'dd/MM/yyyy');
+
       await schema.validate({ title, body });
 
-      await sendPost({ title, body, userId });
+      await sendPost({ title, body, userId, date: formattedDate });
       setTitle('');
       setBody('');
     } catch (error) {
