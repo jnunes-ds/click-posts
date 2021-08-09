@@ -3,7 +3,9 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
+import * as Yup from 'yup';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import { BackButton, Button, Input } from '../../../components';
@@ -24,7 +26,7 @@ import {
 
 export function RegistrationFirstStep() {
   const [name, SetName] = useState('');
-  const [userName, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
 
   const theme = useTheme();
@@ -36,8 +38,29 @@ export function RegistrationFirstStep() {
     navigation.goBack();
   }
 
-  function handleGoToSecondStep() {
-    navigation.navigate('RegistrationSecondStep');
+  async function handleGoToSecondStep() {
+    try {
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required('E-mail é obrigatório!')
+          .email('Digite um e-mail válido!'),
+        username: Yup.string().required('Nome de usuário é obrigatório'),
+        name: Yup.string().required('Nome é brigatório'),
+      });
+
+      await schema.validate({ name, username, email });
+
+      const newUser = {
+        name,
+        username,
+        email,
+      };
+
+      navigation.navigate('RegistrationSecondStep', newUser);
+    } catch (error) {
+      const e = error as Yup.ValidationError;
+      Alert.alert('Atenção', `${e.message}`);
+    }
   }
 
   return (
@@ -75,7 +98,7 @@ export function RegistrationFirstStep() {
                 <Input
                   iconName="smile"
                   title="Nome de usuário (Apelido)"
-                  value={userName}
+                  value={username}
                   onChangeText={setUsername}
                 />
               </RegistrationInput>

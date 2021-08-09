@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
-import { BackButton, Button, Input, PasswordInput } from '../../../components';
+
+import { BackButton, Button, PasswordInput } from '../../../components';
 
 import {
   Container,
@@ -23,9 +24,8 @@ import {
 } from './styles';
 
 export function RegistrationSecondStep() {
-  const [name, SetName] = useState('');
-  const [userName, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
 
   const theme = useTheme();
   const { subtitle, text } = theme.colors;
