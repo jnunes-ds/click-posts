@@ -13,6 +13,8 @@ type NewUser = Omit<User, 'id' | 'phone' | 'website'> & {
   password: string;
 };
 
+type EditUserProps = Omit<User, 'username' | 'email'>;
+
 interface PostsContextData {
   users: User[];
   getUsers(): void;
@@ -22,6 +24,8 @@ interface PostsContextData {
   singIn({ email, password }: Auth): void;
   singOut(): void;
   user: User;
+  // eslint-disable-next-line
+  editUserProfile({ id, name, phone, website, password }: EditUserProps): Promise<void>;
 }
 
 interface PostsProviderProps {
@@ -116,9 +120,43 @@ function UsersProvider({ children }: PostsProviderProps) {
     setUser({} as User);
   }
 
+  async function editUserProfile({
+    id,
+    name,
+    phone,
+    website,
+    password,
+  }: EditUserProps) {
+    try {
+      const editedProfile: User = {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        name: name || user.name,
+        phone,
+        website,
+        password,
+      };
+      setUser(editedProfile);
+      await api.put(`/users/${id}`, editedProfile);
+      Alert.alert('TUDO CERTO', 'Seu perfil foi alterado com sucesso!');
+      await getUsers();
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
   return (
     <UsersContext.Provider
-      value={{ users, getUsers, createNewUser, singIn, singOut, user }}
+      value={{
+        users,
+        getUsers,
+        createNewUser,
+        singIn,
+        singOut,
+        user,
+        editUserProfile,
+      }}
     >
       {children}
     </UsersContext.Provider>

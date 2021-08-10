@@ -7,14 +7,13 @@ import { Container, Title } from './styles';
 interface Props extends RectButtonProps {
   title: string;
   color: string;
+  isLightTheme?: boolean;
 }
 
-export function Button({ title, color, ...rest }: Props) {
-  const theme = useTheme();
-
+export function Button({ title, color, isLightTheme, ...rest }: Props) {
   return (
     <Container color={color} {...rest}>
-      <Title> {title} </Title>
+      <Title isLightTheme={isLightTheme}> {title} </Title>
     </Container>
   );
 }

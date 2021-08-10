@@ -245,7 +245,9 @@
       "email": "junior@mail.com",
       "username": "jnunes-ds",
       "name": "Junior Nunes",
-      "password": "456123"
+      "phone": "7126151911",
+      "website": "braziliamharpy.com",
+      "password": "789456"
     }
   ],
   "posts": [

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
+import * as Yup from 'yup';
 import { Button, Header, Input, PasswordInput } from '../../components';
 import { useUsers } from '../../hooks/Users';
 
@@ -18,14 +20,20 @@ import {
 } from './styles';
 
 export function EditProfile() {
-  const { user } = useUsers();
-  const [name, setName] = useState(user.name);
-  const [website, setWebsite] = useState(user.website);
-  const [phone, setPhone] = useState(user.phone);
-  const [isDataActive, setIsDataActive] = useState(true);
+  const { user, editUserProfile } = useUsers();
+
+  const [name, setName] = useState<string>('');
+  const [website, setWebsite] = useState<string>(user.website);
+  const [phone, setPhone] = useState<string>(user.phone);
+  const [password, setPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [repeatNewPassword, setRepeatNewPassword] = useState<string>('');
+  const [isDataActive, setIsDataActive] = useState<boolean>(true);
 
   const theme = useTheme();
-  const { success, main } = theme.colors;
+  const { success, main, background_secondary } = theme.colors;
+
+  const navigation = useNavigation();
 
   function handleGoToChangeData() {
     setIsDataActive(true);
@@ -33,6 +41,92 @@ export function EditProfile() {
 
   function handleGoToChangePassword() {
     setIsDataActive(false);
+  }
+
+  async function handleSaveChanges(): Promise<void> {
+    try {
+      if (password !== '' || newPassword !== '' || repeatNewPassword !== '') {
+        const passwordSchema = Yup.object().shape({
+          repeatNewPassword: Yup.string().required(
+            'Repita a nova senha escolhida!',
+          ),
+          newPassword: Yup.string().required(
+            'Escolha uma nova senha para substituir a atual!',
+          ),
+          password: Yup.string().required('Digite a sua sena atual!'),
+        });
+
+        await passwordSchema.validate({
+          password,
+          newPassword,
+          repeatNewPassword,
+        });
+
+        if (newPassword !== repeatNewPassword) {
+          Alert.alert(
+            'ATENÇÃO',
+            'Novo Password e sua repetição não são iguais, repita o procedimento!',
+          );
+          return;
+        }
+
+        if (password !== user.password) {
+          Alert.alert('senha incorreta', 'Verifique a sua senha', [
+            { text: 'OK', style: 'destructive' },
+          ]);
+
+          return;
+        }
+      }
+
+      Alert.alert(
+        'ATENÇÃO',
+        'Tem certeza que deseja salvar as informações e alterar o perfil?',
+        [
+          {
+            text: 'CANCELAR',
+            style: 'cancel',
+          },
+          {
+            text: 'ALTERAR',
+            style: 'default',
+            onPress: () => handleEditProfile(),
+          },
+        ],
+      );
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert(error.message);
+      }
+      console.log(error);
+    }
+  }
+
+  async function handleEditProfile() {
+    try {
+      await await editUserProfile({
+        id: user.id,
+        name,
+        website,
+        phone,
+        password: newPassword,
+      });
+      handleCleanInputs();
+      setIsDataActive(true);
+      navigation.navigate('Home');
+    } catch (error) {
+      const e = error as unknown as Error;
+      Alert.alert(e.message);
+    }
+  }
+
+  function handleCleanInputs() {
+    setName('');
+    setWebsite('');
+    setPhone('');
+    setPassword('');
+    setNewPassword('');
+    setRepeatNewPassword('');
   }
 
   return (
@@ -68,7 +162,7 @@ export function EditProfile() {
                 <UserInformation>
                   <Input
                     iconName="user"
-                    title="Nome"
+                    title={user.name}
                     value={name}
                     onChangeText={setName}
                   />
@@ -94,7 +188,7 @@ export function EditProfile() {
                 <UserInformation>
                   <Input
                     iconName="mail"
-                    title="Site"
+                    title={user.website || 'Site'}
                     value={website}
                     onChangeText={setWebsite}
                   />
@@ -102,7 +196,7 @@ export function EditProfile() {
                 <UserInformation>
                   <Input
                     iconName="mail"
-                    title="Telefone"
+                    title={user.phone || 'Telefone'}
                     value={phone}
                     onChangeText={setPhone}
                   />
@@ -111,18 +205,40 @@ export function EditProfile() {
             ) : (
               <UserInformatonContainer>
                 <UserInformation>
-                  <PasswordInput title="Senha atual" />
+                  <PasswordInput
+                    title="Senha atual"
+                    value={password}
+                    onChangeText={setPassword}
+                  />
                 </UserInformation>
                 <UserInformation>
-                  <PasswordInput title="Nova senha" />
+                  <PasswordInput
+                    title="Nova senha"
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                  />
                 </UserInformation>
                 <UserInformation>
-                  <PasswordInput title="Repita a nova senha" />
+                  <PasswordInput
+                    title="Repita a nova senha"
+                    value={repeatNewPassword}
+                    onChangeText={setRepeatNewPassword}
+                  />
                 </UserInformation>
               </UserInformatonContainer>
             )}
 
-            <Button title="Salvar Alterações" color={success} />
+            <Button
+              title="Salvar Alterações"
+              color={success}
+              onPress={handleSaveChanges}
+            />
+            <Button
+              title="Limpar Dados"
+              color={background_secondary}
+              onPress={handleCleanInputs}
+              isLightTheme
+            />
             <Button title="Excluir conta" color={main} />
           </InformationsContainer>
         </Body>
