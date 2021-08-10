@@ -25,14 +25,14 @@ interface PostData {
   title: string;
   body: string;
   date?: string;
-  isMyPost?: boolean;
 }
 
 interface Props {
   postData: PostData;
+  isMyPost?: boolean;
 }
 
-export function PostCard({ postData }: Props) {
+export function PostCard({ postData, isMyPost }: Props) {
   const [currentUser, setCurrentUser] = useState<User>({} as User);
 
   const date = new Date(`${postData.date}`);
@@ -50,7 +50,7 @@ export function PostCard({ postData }: Props) {
   }
 
   function handleGoToEditPost() {
-    navigation.navigate('EditPost');
+    navigation.navigate('EditPost', { postData });
   }
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function PostCard({ postData }: Props) {
   return (
     <Container>
       <Header>
-        {postData.isMyPost ? (
+        {isMyPost ? (
           <Name isMyPost> {currentUser.username} </Name>
         ) : (
           <BorderlessButton onPress={handleGoToProfile}>
@@ -79,7 +79,7 @@ export function PostCard({ postData }: Props) {
           </BorderlessButton>
         )}
 
-        {postData.isMyPost && (
+        {isMyPost && (
           <BorderlessButton onPress={handleGoToEditPost}>
             <Feather name="edit" color={subtitle} size={24} />
           </BorderlessButton>

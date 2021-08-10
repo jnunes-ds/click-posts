@@ -82,7 +82,9 @@ export function Home() {
             <FlatList
               data={formattedPostList}
               keyExtractor={item => String(item.id)}
-              renderItem={({ item }) => <PostCard postData={item} />}
+              renderItem={({ item }) => (
+                <PostCard postData={item} isMyPost={item.userId === user.id} />
+              )}
               showsVerticalScrollIndicator={false}
             />
           )}

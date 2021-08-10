@@ -9,14 +9,18 @@ interface PostProps {
   userId: string;
   title: string;
   body: string;
-  date: string;
+  date: Date;
 }
+
+type EditPostProps = Omit<PostProps, 'userId' | 'date'>;
 
 interface PostsContextData {
   posts: Post[];
   getPosts(): void;
   // eslint-disable-next-line no-unused-vars
   sendPost({ userId, title, body, date }: PostProps): Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  editPost({ id, title, body, date, userId }: PostProps): Promise<void>;
 }
 
 interface PostsProviderProps {
@@ -65,8 +69,21 @@ function PostsProvider({ children }: PostsProviderProps) {
     }
   }
 
+  async function editPost({ id, title, body, date, userId }: PostProps) {
+    try {
+      await api.put(`/posts/${id}`, {
+        title,
+        body,
+        userId,
+        date,
+      });
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
   return (
-    <PostsContext.Provider value={{ posts, getPosts, sendPost }}>
+    <PostsContext.Provider value={{ posts, getPosts, sendPost, editPost }}>
       {children}
     </PostsContext.Provider>
   );
