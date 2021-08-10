@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import { Button, Header, Input, PasswordInput } from '../../components';
+import { useUsers } from '../../hooks/Users';
 
 import {
   Container,
@@ -17,8 +18,11 @@ import {
 } from './styles';
 
 export function EditProfile() {
+  const { user } = useUsers();
+  const [name, setName] = useState(user.name);
+  const [website, setWebsite] = useState(user.website);
+  const [phone, setPhone] = useState(user.phone);
   const [isDataActive, setIsDataActive] = useState(true);
-  const [email, setEmail] = useState('');
 
   const theme = useTheme();
   const { success, main } = theme.colors;
@@ -40,8 +44,8 @@ export function EditProfile() {
       />
       <Content>
         <Header
-          userName="Júnior"
-          name="Júnior Nunes"
+          userName={user.username}
+          name={user.name}
           type="profile"
           isMyProfile
         />
@@ -64,32 +68,44 @@ export function EditProfile() {
                 <UserInformation>
                   <Input
                     iconName="user"
-                    title="Name"
-                    value={email}
-                    onChangeText={setEmail}
+                    title="Nome"
+                    value={name}
+                    onChangeText={setName}
                   />
                 </UserInformation>
                 <UserInformation>
                   <Input
                     iconName="smile"
-                    title="Apelido"
-                    value={email}
-                    onChangeText={setEmail}
+                    title={user.username}
+                    editable={false}
+                    selectTextOnFocus={false}
+                    disabled
                   />
                 </UserInformation>
                 <UserInformation>
                   <Input
                     iconName="mail"
-                    title="E-mail"
-                    value={email}
-                    onChangeText={setEmail}
+                    title={user.email}
+                    editable={false}
+                    selectTextOnFocus={false}
+                    disabled
                   />
                 </UserInformation>
                 <UserInformation>
-                  <Input iconName="mail" title="Site" />
+                  <Input
+                    iconName="mail"
+                    title="Site"
+                    value={website}
+                    onChangeText={setWebsite}
+                  />
                 </UserInformation>
                 <UserInformation>
-                  <Input iconName="mail" title="Telefone" />
+                  <Input
+                    iconName="mail"
+                    title="Telefone"
+                    value={phone}
+                    onChangeText={setPhone}
+                  />
                 </UserInformation>
               </UserInformatonContainer>
             ) : (

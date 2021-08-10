@@ -10,14 +10,15 @@ interface Props extends TextInputProps {
   title: string;
   value?: string;
   iconName: React.ComponentProps<typeof Feather>['name'];
+  disabled?: boolean;
 }
 
-export function Input({ title, value, iconName, ...rest }: Props) {
+export function Input({ title, value, iconName, disabled, ...rest }: Props) {
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
   const theme = useTheme();
-  const { text, subtitle } = theme.colors;
+  const { text, subtitle, main } = theme.colors;
 
   function handleInputFocus() {
     setIsFocused(true);
@@ -31,7 +32,15 @@ export function Input({ title, value, iconName, ...rest }: Props) {
   return (
     <Container>
       <IconContainer isFocused={isFocused}>
-        <Feather name={iconName} size={22} color={isFilled ? subtitle : text} />
+        {disabled ? (
+          <Feather name={iconName} size={22} color={main} />
+        ) : (
+          <Feather
+            name={iconName}
+            size={22}
+            color={isFilled ? subtitle : text}
+          />
+        )}
       </IconContainer>
       <InputContainer isFocused={isFocused}>
         <InputText
