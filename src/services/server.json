@@ -869,13 +869,6 @@
       "date": "Mon Aug 09 2021 21:08:16 GMT-0300 (-03)"
     },
     {
-      "id": "112fe822-adf3-44af-a245-ea3882238092",
-      "userId": "ee870784-7165-4547-b3b3-f2a10c9e78ed",
-      "title": "Teste",
-      "body": "Testando",
-      "date": "Mon Aug 09 2021 22:21:12 GMT-0300 (-03)"
-    },
-    {
       "id": "0dac9cef-fab4-41a1-a854-397b3246760a",
       "userId": "ee870784-7165-4547-b3b3-f2a10c9e78ed",
       "title": "Mais um",
@@ -888,20 +881,6 @@
       "userId": "ee870784-7165-4547-b3b3-f2a10c9e78ed",
       "date": "2021-08-10T01:59:18.000Z",
       "id": "a9ba1375-d516-493d-b667-0adb5b482adb"
-    },
-    {
-      "id": "ae920795-4126-44ba-a9ec-c5d09a65aff2",
-      "userId": "ee870784-7165-4547-b3b3-f2a10c9e78ed",
-      "title": "pq n ta indo",
-      "body": "PQQQQQQQQQQ?????¿?",
-      "date": "Mon Aug 09 2021 23:08:03 GMT-0300 (-03)"
-    },
-    {
-      "title": "Agora a postagem vai",
-      "body": "Finalmente ta indo!!! AEEEEEE",
-      "userId": "ee870784-7165-4547-b3b3-f2a10c9e78ed",
-      "date": "2021-08-10T02:23:10.000Z",
-      "id": "da815181-380c-4faa-b408-f23057f3d5fc"
     }
   ]
 }

@@ -12,7 +12,9 @@ interface PostProps {
   date: Date;
 }
 
-type EditPostProps = Omit<PostProps, 'userId' | 'date'>;
+interface DeleteProps {
+  id: string;
+}
 
 interface PostsContextData {
   posts: Post[];
@@ -21,6 +23,8 @@ interface PostsContextData {
   sendPost({ userId, title, body, date }: PostProps): Promise<void>;
   // eslint-disable-next-line no-unused-vars
   editPost({ id, title, body, date, userId }: PostProps): Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  deletePost({ id }: DeleteProps): Promise<void>;
 }
 
 interface PostsProviderProps {
@@ -82,8 +86,18 @@ function PostsProvider({ children }: PostsProviderProps) {
     }
   }
 
+  async function deletePost({ id }: DeleteProps) {
+    try {
+      await api.delete(`/posts/${id}`);
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
   return (
-    <PostsContext.Provider value={{ posts, getPosts, sendPost, editPost }}>
+    <PostsContext.Provider
+      value={{ posts, getPosts, sendPost, editPost, deletePost }}
+    >
       {children}
     </PostsContext.Provider>
   );

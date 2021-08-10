@@ -38,12 +38,12 @@ export function EditPost() {
   const [messageIsFocused, setMessageIsFocused] = useState(false);
 
   const theme = useTheme();
-  const { success, subtitle } = theme.colors;
+  const { success, subtitle, main } = theme.colors;
 
   const navigation = useNavigation();
 
   const { user } = useUsers();
-  const { editPost, getPosts } = usePosts();
+  const { editPost, getPosts, deletePost } = usePosts();
 
   function handlerTitleFocus() {
     setTitleIsFocused(true);
@@ -78,7 +78,38 @@ export function EditPost() {
       navigation.navigate('Home');
       Alert.alert('Parabéns, Seu post foi editado com sucesso!');
     } catch (error) {
-      console.log(error);
+      const e = error as unknown as Error;
+      Alert.alert('Atenção', e.message);
+    }
+  }
+
+  function handleCallDeletePostFunction() {
+    Alert.alert(
+      'AVISO',
+      'Ao clicar em ok a postagem será removida para sempre, tem certeza que deseja continuar?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          style: 'destructive',
+          onPress: () => handleDeletePost(),
+        },
+      ],
+    );
+  }
+
+  async function handleDeletePost() {
+    try {
+      await deletePost({ id: postData.id });
+      Alert.alert('Tudo certo,', 'Seu post foi deletado com sucesso!');
+      await getPosts();
+      navigation.navigate('Home');
+    } catch (error) {
+      const e = error as unknown as Error;
+      Alert.alert('Atenção', e.message);
     }
   }
 
@@ -130,6 +161,11 @@ export function EditPost() {
             </NewPostContent>
             <Button title="Enviar" color={success} onPress={handleEditPost} />
             <Button title="Cancelar" color={subtitle} onPress={handleGoBack} />
+            <Button
+              title="Excluir"
+              color={main}
+              onPress={handleCallDeletePostFunction}
+            />
           </NewPostContainer>
         </Body>
       </Content>
