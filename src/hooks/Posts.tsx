@@ -54,6 +54,7 @@ function PostsProvider({ children }: PostsProviderProps) {
         userId,
         title,
         body,
+        date,
       };
 
       await api.post('/posts', newPost);

@@ -3,4 +3,5 @@ export interface PostDTO {
   id: string;
   title: string;
   body: string;
+  date?: Date;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { format } from 'date-fns';
 import { Header, PostCard } from '../../components';
 import { PostDTO } from '../../dtos/PostDTO';
 import { usePosts } from '../../hooks/Posts';
@@ -10,15 +11,17 @@ import api from '../../services/api';
 import { Container, Content, Posts } from './styles';
 
 interface Post extends PostDTO {
-  date?: string;
+  date?: Date;
   isMyPost?: boolean;
 }
 
 export function Home() {
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line prettier/prettier
+  const [formattedPostList, setFormattedPostList] = useState<Post[]>([] as Post[])
 
   const { getPosts, posts } = usePosts();
-  const { getUsers, users } = useUsers();
+  const { getUsers, user } = useUsers();
 
   useEffect(() => {
     // eslint-disable-next-line prefer-const
@@ -33,6 +36,36 @@ export function Home() {
     fetchPosts();
   }, []);
 
+  useEffect(() => {
+    // eslint-disable-next-line prefer-const
+    let isMounted = true;
+    function createFormattedPostList() {
+      const newArray = [] as Post[];
+      if (posts.length >= 100) {
+        posts.forEach(item => {
+          if (!item.date) {
+            const newDate = new Date('08/05/2021');
+            newArray.push({ date: newDate, ...item });
+          } else {
+            newArray.push(item);
+          }
+
+          newArray.sort((a, b) => {
+            return (
+              new Date(`${b.date}`).getTime() - new Date(`${a.date}`).getTime()
+            );
+          });
+        });
+      }
+      setFormattedPostList(newArray);
+
+      return () => {
+        isMounted = false;
+      };
+    }
+    createFormattedPostList();
+  }, [posts]);
+
   return (
     <Container>
       <StatusBar
@@ -41,14 +74,14 @@ export function Home() {
         translucent
       />
       <Content>
-        <Header userName="Júnior" name="Júnior Nunes" type="home" />
+        <Header userName={user.username} name={user.name} type="home" />
         <Posts>
           {loading ? (
             <Text>Loading . . .</Text>
           ) : (
             <FlatList
-              data={posts}
-              keyExtractor={item => item.id}
+              data={formattedPostList}
+              keyExtractor={item => String(item.id)}
               renderItem={({ item }) => <PostCard postData={item} />}
               showsVerticalScrollIndicator={false}
             />

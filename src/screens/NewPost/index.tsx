@@ -28,7 +28,7 @@ export function NewPost() {
   const theme = useTheme();
   const { success, subtitle } = theme.colors;
 
-  const { sendPost } = usePosts();
+  const { sendPost, getPosts } = usePosts();
   const { user } = useUsers();
 
   function handlerTitleFocus() {
@@ -56,13 +56,13 @@ export function NewPost() {
 
       const userId = user.id;
       const newDate = new Date();
-      const formattedDate = format(newDate, 'dd/MM/yyyy');
 
       await schema.validate({ title, body });
 
-      await sendPost({ title, body, userId, date: formattedDate });
+      await sendPost({ title, body, userId, date: String(newDate) });
       setTitle('');
       setBody('');
+      getPosts();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Atenção', error.message);

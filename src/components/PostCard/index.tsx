@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
 
 import { User } from '../../dtos/UserDTO';
 import {
@@ -32,7 +33,10 @@ interface Props {
 }
 
 export function PostCard({ postData }: Props) {
-  const [user, setUser] = useState<User>({} as User);
+  const [currentUser, setCurrentUser] = useState<User>({} as User);
+
+  const date = new Date(`${postData.date}`);
+  const formattedDate = format(date, 'dd/MM/yyyy');
 
   const theme = useTheme();
   const { subtitle } = theme.colors;
@@ -42,7 +46,7 @@ export function PostCard({ postData }: Props) {
   const navigation = useNavigation();
 
   function handleGoToProfile() {
-    navigation.navigate('Profile', { user });
+    navigation.navigate('Profile', { user: currentUser });
   }
 
   function handleGoToEditPost() {
@@ -55,7 +59,7 @@ export function PostCard({ postData }: Props) {
     function getAtualUser() {
       const filteredUsers = users.filter(item => item.id === postData.userId);
 
-      setUser(filteredUsers[0]);
+      setCurrentUser(filteredUsers[0]);
     }
     getAtualUser();
 
@@ -68,10 +72,10 @@ export function PostCard({ postData }: Props) {
     <Container>
       <Header>
         {postData.isMyPost ? (
-          <Name isMyPost> {user.username} </Name>
+          <Name isMyPost> {currentUser.username} </Name>
         ) : (
           <BorderlessButton onPress={handleGoToProfile}>
-            <Name> {user.username} </Name>
+            <Name> {currentUser.username} </Name>
           </BorderlessButton>
         )}
 
@@ -87,7 +91,7 @@ export function PostCard({ postData }: Props) {
       </Content>
       <Footer>
         {postData.date ? (
-          <DateContainer>{postData.date}</DateContainer>
+          <DateContainer>{formattedDate}</DateContainer>
         ) : (
           <DateContainer>05/08/2021</DateContainer>
         )}
