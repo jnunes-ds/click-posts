@@ -82,7 +82,7 @@ export function Home() {
               <LottieView
                 source={loadingPostsAnimated}
                 autoPlay
-                style={{ height: 200 }}
+                style={{ height: 300 }}
                 resizeMode="contain"
                 loop
               />
