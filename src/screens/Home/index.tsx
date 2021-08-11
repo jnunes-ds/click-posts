@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
+import LottieView from 'lottie-react-native';
 import { Header, PostCard } from '../../components';
 import { PostDTO } from '../../dtos/PostDTO';
 import { usePosts } from '../../hooks/Posts';
 import { useUsers } from '../../hooks/Users';
-import api from '../../services/api';
+import loadingPostsAnimated from '../../assets/post-animated.json';
 
-import { Container, Content, Posts } from './styles';
+import { Container, Content, Posts, AnimationContainer } from './styles';
 
 interface Post extends PostDTO {
   date?: Date;
@@ -77,7 +77,15 @@ export function Home() {
         <Header userName={user.username} name={user.name} type="home" />
         <Posts>
           {loading ? (
-            <Text>Loading . . .</Text>
+            <AnimationContainer>
+              <LottieView
+                source={loadingPostsAnimated}
+                autoPlay
+                style={{ height: 200 }}
+                resizeMode="contain"
+                loop
+              />
+            </AnimationContainer>
           ) : (
             <FlatList
               data={formattedPostList}

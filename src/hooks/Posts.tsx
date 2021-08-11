@@ -9,7 +9,7 @@ interface PostProps {
   userId: string;
   title: string;
   body: string;
-  date: Date;
+  date: string;
 }
 
 interface DeleteProps {

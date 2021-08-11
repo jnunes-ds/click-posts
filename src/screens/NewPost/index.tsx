@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 import * as Yup from 'yup';
 import uuid from 'react-native-uuid';
 import { format, compareAsc } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
 import { Button, Header } from '../../components';
 import { usePosts } from '../../hooks/Posts';
 import { useUsers } from '../../hooks/Users';
@@ -30,6 +31,8 @@ export function NewPost() {
 
   const { sendPost, getPosts } = usePosts();
   const { user } = useUsers();
+
+  const navigation = useNavigation();
 
   function handlerTitleFocus() {
     setTitleIsFocused(true);
@@ -62,6 +65,7 @@ export function NewPost() {
       await sendPost({ title, body, userId, date: String(newDate) });
       setTitle('');
       setBody('');
+      navigation.navigate('Home');
       getPosts();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {

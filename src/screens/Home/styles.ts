@@ -21,3 +21,9 @@ export const Posts = styled.View`
   padding-top: 0;
   padding-bottom: 0;
 `;
+
+export const AnimationContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
