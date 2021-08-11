@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { Alert, Modal, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
@@ -17,7 +17,10 @@ import {
   Option,
   OptionContainer,
   OptionContent,
+  CenteredView,
+  DeleteAccountModal,
 } from './styles';
+import { DeleteAccount } from '../DeleteAccount';
 
 export function EditProfile() {
   const { user, editUserProfile } = useUsers();
@@ -29,6 +32,8 @@ export function EditProfile() {
   const [newPassword, setNewPassword] = useState<string>('');
   const [repeatNewPassword, setRepeatNewPassword] = useState<string>('');
   const [isDataActive, setIsDataActive] = useState<boolean>(true);
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const theme = useTheme();
   const { success, main, background_secondary } = theme.colors;
@@ -127,6 +132,15 @@ export function EditProfile() {
     setPassword('');
     setNewPassword('');
     setRepeatNewPassword('');
+  }
+
+  function handleOpenModal() {
+    setModalIsOpen(true);
+  }
+
+  function handleCloseModal() {
+    console.log('fechei!');
+    setModalIsOpen(false);
   }
 
   return (
@@ -239,10 +253,17 @@ export function EditProfile() {
               onPress={handleCleanInputs}
               isLightTheme
             />
-            <Button title="Excluir conta" color={main} />
+            <Button
+              title="Excluir conta"
+              color={main}
+              onPress={handleOpenModal}
+            />
           </InformationsContainer>
         </Body>
       </Content>
+      <DeleteAccountModal modalIsOpen={modalIsOpen}>
+        <DeleteAccount onCloseModal={handleCloseModal} />
+      </DeleteAccountModal>
     </Container>
   );
 }

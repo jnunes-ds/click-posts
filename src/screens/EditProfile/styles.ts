@@ -1,9 +1,15 @@
 import styled, { css } from 'styled-components/native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { ModalProps } from 'react-native';
+import { PasswordInput } from '../../components/PasswordInput/index';
 
 interface OptionContentProps {
   isActive?: boolean;
+}
+
+interface DeleteAccountModalProps {
+  modalIsOpen: boolean;
 }
 
 export const Container = styled.View`
@@ -80,4 +86,35 @@ export const Option = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary};
   font-size: ${RFValue(22)}px;
   color: ${({ theme }) => theme.colors.subtitle};
+`;
+
+export const DeleteAccountScreenContainer = styled.Modal`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: transparent;
+`;
+
+export const CenteredView = styled.View``;
+
+export const DeleteAccountModal = styled.View<DeleteAccountModalProps>`
+  flex: 1;
+  width: 105%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0%;
+  bottom: 0;
+  left: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  ${({ modalIsOpen }) =>
+    !modalIsOpen &&
+    css`
+      width: 0;
+      height: 0;
+      display: none;
+    `}
 `;
