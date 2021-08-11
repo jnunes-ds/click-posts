@@ -63,3 +63,5 @@ export const DateContainer = styled.Text`
   font-size: ${RFValue(15)}px;
   color: ${({ theme }) => theme.colors.subtitle};
 `;
+
+export const DeletedName = styled.View``;

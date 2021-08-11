@@ -16,6 +16,7 @@ import {
   Message,
   Footer,
   DateContainer,
+  DeletedName,
 } from './styles';
 import { useUsers } from '../../hooks/Users';
 
@@ -33,6 +34,7 @@ interface Props {
 }
 
 export function PostCard({ postData, isMyPost }: Props) {
+  const [isDeletedUser, setIsDeletedUser] = useState(false);
   const [currentUser, setCurrentUser] = useState<User>({} as User);
 
   const date = new Date(`${postData.date}`);
@@ -57,6 +59,16 @@ export function PostCard({ postData, isMyPost }: Props) {
     // eslint-disable-next-line prefer-const
     let isMounted = true;
     function getAtualUser() {
+      const checkIfIsDeletedUset = users.map(
+        item => item.id === postData.userId,
+      );
+
+      if (!checkIfIsDeletedUset.includes(true)) {
+        setIsDeletedUser(true);
+
+        return;
+      }
+
       const filteredUsers = users.filter(item => item.id === postData.userId);
 
       setCurrentUser(filteredUsers[0]);
@@ -71,6 +83,7 @@ export function PostCard({ postData, isMyPost }: Props) {
   return (
     <Container>
       <Header>
+        {isDeletedUser && <DeletedName>Usuário deletado!</DeletedName>}
         {isMyPost ? (
           <Name isMyPost> {currentUser.username} </Name>
         ) : (
