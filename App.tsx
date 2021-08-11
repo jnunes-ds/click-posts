@@ -9,9 +9,16 @@ import {
   NotoSans_700Bold,
 } from '@expo-google-fonts/noto-sans';
 
+import { LogBox } from 'react-native';
 import theme from './src/global/styles/theme';
 import { Routes } from './src/routes';
 import { AppProvider } from './src/hooks';
+
+// Ignore log notification by message:
+LogBox.ignoreLogs(['Warning: ...']);
+
+// Ignore all log notifications:
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
