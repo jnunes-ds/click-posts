@@ -26,6 +26,7 @@ interface PostsContextData {
   user: User;
   // eslint-disable-next-line
   editUserProfile({ id, name, phone, website, password }: EditUserProps): Promise<void>;
+  deleteUserProfile(): void;
 }
 
 interface PostsProviderProps {
@@ -146,6 +147,11 @@ function UsersProvider({ children }: PostsProviderProps) {
     }
   }
 
+  async function deleteUserProfile() {
+    await api.delete(`/users/${user.id}`);
+    setUser({} as User);
+  }
+
   return (
     <UsersContext.Provider
       value={{
@@ -156,6 +162,7 @@ function UsersProvider({ children }: PostsProviderProps) {
         singOut,
         user,
         editUserProfile,
+        deleteUserProfile,
       }}
     >
       {children}

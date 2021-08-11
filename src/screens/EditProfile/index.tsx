@@ -71,7 +71,7 @@ export function EditProfile() {
         if (newPassword !== repeatNewPassword) {
           Alert.alert(
             'ATENÇÃO',
-            'Novo Password e sua repetição não são iguais, repita o procedimento!',
+            'A nova senha e a sua repetião não coincidem. Repita o procedimento!',
           );
           return;
         }
