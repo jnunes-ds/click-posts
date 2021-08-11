@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useState, useContext } from 'react';
+import AsynncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import uuid from 'react-native-uuid';
 import { User } from '../dtos/UserDTO';
@@ -17,16 +18,17 @@ type EditUserProps = Omit<User, 'username' | 'email'>;
 
 interface PostsContextData {
   users: User[];
-  getUsers(): void;
+  getUsers(): Promise<() => void>;
   // eslint-disable-next-line no-unused-vars
   createNewUser({ email, username, name, password }: NewUser): void;
   // eslint-disable-next-line no-unused-vars
   singIn({ email, password }: Auth): void;
-  singOut(): void;
+  singOut(): Promise<void>;
   user: User;
   // eslint-disable-next-line
   editUserProfile({ id, name, phone, website, password }: EditUserProps): Promise<void>;
-  deleteUserProfile(): void;
+  deleteUserProfile(): Promise<void>;
+  checkIfUserIsLogged(): Promise<void>;
 }
 
 interface PostsProviderProps {
@@ -38,6 +40,8 @@ const UsersContext = createContext<PostsContextData>({} as PostsContextData);
 function UsersProvider({ children }: PostsProviderProps) {
   const [users, setUsers] = useState<User[]>([] as User[]);
   const [user, setUser] = useState<User>({} as User);
+
+  const dataKey = '@clickposts:user';
 
   async function getUsers() {
     // eslint-disable-next-line prefer-const
@@ -105,20 +109,30 @@ function UsersProvider({ children }: PostsProviderProps) {
   }
 
   async function singIn({ email, password }: Auth): Promise<void> {
-    await getUsers();
-    const filteredUsers = users.filter(item => item.email === email);
+    try {
+      await getUsers();
+      const filteredUsers = users.filter(item => item.email === email);
 
-    if (filteredUsers[0].password !== password) {
-      Alert.alert('Erro de login', 'Login ou senha incorreto');
+      if (filteredUsers[0].password !== password) {
+        Alert.alert('Erro de login', 'Login ou senha incorreto');
 
-      return;
+        return;
+      }
+      setUser(filteredUsers[0]);
+      await AsynncStorage.setItem(dataKey, JSON.stringify(filteredUsers[0]));
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Não foi possível efetuar o login');
     }
-    setUser(filteredUsers[0]);
-    console.log(user);
   }
 
-  function singOut() {
+  async function singOut() {
     setUser({} as User);
+    try {
+      await AsynncStorage.removeItem(dataKey);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function editUserProfile({
@@ -147,6 +161,17 @@ function UsersProvider({ children }: PostsProviderProps) {
     }
   }
 
+  async function checkIfUserIsLogged() {
+    try {
+      const response = await AsynncStorage.getItem(dataKey);
+      if (response) {
+        setUser(JSON.parse(response!));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function deleteUserProfile() {
     await api.delete(`/users/${user.id}`);
     setUser({} as User);
@@ -163,6 +188,7 @@ function UsersProvider({ children }: PostsProviderProps) {
         user,
         editUserProfile,
         deleteUserProfile,
+        checkIfUserIsLogged,
       }}
     >
       {children}

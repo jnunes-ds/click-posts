@@ -21,7 +21,7 @@ export function Home() {
   const [formattedPostList, setFormattedPostList] = useState<Post[]>([] as Post[])
 
   const { getPosts, posts } = usePosts();
-  const { getUsers, user } = useUsers();
+  const { getUsers, user, checkIfUserIsLogged } = useUsers();
 
   useEffect(() => {
     // eslint-disable-next-line prefer-const
@@ -30,6 +30,7 @@ export function Home() {
       setLoading(true);
       getUsers();
       getPosts();
+      checkIfUserIsLogged();
       setLoading(false);
     }
 

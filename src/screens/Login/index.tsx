@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import AppLoading from 'expo-app-loading';
 import React, { useState, useEffect } from 'react';
 import {
   KeyboardAvoidingView,
@@ -26,8 +27,9 @@ import {
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const { singIn, getUsers } = useUsers();
+  const { singIn, checkIfUserIsLogged, getUsers } = useUsers();
 
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
@@ -58,8 +60,29 @@ export function Login() {
   }
 
   useEffect(() => {
-    getUsers();
+    // eslint-disable-next-line prefer-const
+    let isMounted = true;
+    async function checkUser() {
+      try {
+        await getUsers();
+        setLoading(true);
+        if (isMounted) {
+          await checkIfUserIsLogged();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      return () => {
+        isMounted = false;
+      };
+    }
+    checkUser();
   }, []);
+
+  if (loading) {
+    return <AppLoading />;
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled style={{ flex: 1 }}>
