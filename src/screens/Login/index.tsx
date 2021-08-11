@@ -6,7 +6,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
-  Platform,
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import * as Yup from 'yup';
