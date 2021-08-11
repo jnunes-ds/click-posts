@@ -12,7 +12,6 @@ import {
 import theme from './src/global/styles/theme';
 import { Routes } from './src/routes';
 import { AppProvider } from './src/hooks';
-import { useUsers } from './src/hooks/Users';
 
 export default function App() {
   const [fontsLoaded] = useFonts({

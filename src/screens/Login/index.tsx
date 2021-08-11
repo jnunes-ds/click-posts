@@ -33,6 +33,8 @@ export function Login() {
   const theme = useTheme();
   const { subtitle, success } = theme.colors;
 
+  const { user } = useUsers();
+
   const navigation = useNavigation();
 
   async function handleSingIn() {
@@ -56,31 +58,6 @@ export function Login() {
 
   function handleGoToRegistration() {
     navigation.navigate('RegistrationFirstStep');
-  }
-
-  useEffect(() => {
-    // eslint-disable-next-line prefer-const
-    let isMounted = true;
-    async function checkUser() {
-      try {
-        await getUsers();
-        setLoading(true);
-        if (isMounted) {
-          await checkIfUserIsLogged();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      return () => {
-        isMounted = false;
-      };
-    }
-    checkUser();
-  }, []);
-
-  if (loading) {
-    return <AppLoading />;
   }
 
   return (

@@ -165,7 +165,8 @@ function UsersProvider({ children }: PostsProviderProps) {
     try {
       const response = await AsynncStorage.getItem(dataKey);
       if (response) {
-        setUser(JSON.parse(response!));
+        setUser(JSON.parse(response));
+        return;
       }
     } catch (error) {
       console.log(error);
