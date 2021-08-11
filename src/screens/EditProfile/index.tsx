@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StatusBar } from 'react-native';
+import { Alert, Modal, StatusBar, Text, View } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
@@ -34,6 +34,7 @@ export function EditProfile() {
   const [isDataActive, setIsDataActive] = useState<boolean>(true);
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const theme = useTheme();
   const { success, main, background_secondary } = theme.colors;
@@ -125,13 +126,15 @@ export function EditProfile() {
     }
   }
 
-  function handleCleanInputs() {
+  async function handleCleanInputs() {
+    await setLoading(true);
     setName('');
     setWebsite('');
     setPhone('');
     setPassword('');
     setNewPassword('');
     setRepeatNewPassword('');
+    setLoading(false);
   }
 
   function handleOpenModal() {
@@ -139,7 +142,6 @@ export function EditProfile() {
   }
 
   function handleCloseModal() {
-    console.log('fechei!');
     setModalIsOpen(false);
   }
 
@@ -157,109 +159,115 @@ export function EditProfile() {
           type="profile"
           isMyProfile
         />
-        <Body>
-          <InformationsContainer>
-            <ChoosingChange>
-              <OptionContainer onPress={handleGoToChangeData}>
-                <OptionContent isActive={isDataActive}>
-                  <Option>Dados</Option>
-                </OptionContent>
-              </OptionContainer>
-              <OptionContainer onPress={handleGoToChangePassword}>
-                <OptionContent isActive={!isDataActive}>
-                  <Option>Senha</Option>
-                </OptionContent>
-              </OptionContainer>
-            </ChoosingChange>
-            {isDataActive ? (
-              <UserInformatonContainer>
-                <UserInformation>
-                  <Input
-                    iconName="user"
-                    title={user.name}
-                    value={name}
-                    onChangeText={setName}
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <Input
-                    iconName="smile"
-                    title={user.username}
-                    editable={false}
-                    selectTextOnFocus={false}
-                    disabled
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <Input
-                    iconName="mail"
-                    title={user.email}
-                    editable={false}
-                    selectTextOnFocus={false}
-                    disabled
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <Input
-                    iconName="mail"
-                    title={user.website || 'Site'}
-                    value={website}
-                    onChangeText={setWebsite}
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <Input
-                    iconName="mail"
-                    title={user.phone || 'Telefone'}
-                    value={phone}
-                    onChangeText={setPhone}
-                  />
-                </UserInformation>
-              </UserInformatonContainer>
-            ) : (
-              <UserInformatonContainer>
-                <UserInformation>
-                  <PasswordInput
-                    title="Senha atual"
-                    value={password}
-                    onChangeText={setPassword}
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <PasswordInput
-                    title="Nova senha"
-                    value={newPassword}
-                    onChangeText={setNewPassword}
-                  />
-                </UserInformation>
-                <UserInformation>
-                  <PasswordInput
-                    title="Repita a nova senha"
-                    value={repeatNewPassword}
-                    onChangeText={setRepeatNewPassword}
-                  />
-                </UserInformation>
-              </UserInformatonContainer>
-            )}
+        {loading ? (
+          <View>
+            <Text>Loading. . .</Text>
+          </View>
+        ) : (
+          <Body>
+            <InformationsContainer>
+              <ChoosingChange>
+                <OptionContainer onPress={handleGoToChangeData}>
+                  <OptionContent isActive={isDataActive}>
+                    <Option>Dados</Option>
+                  </OptionContent>
+                </OptionContainer>
+                <OptionContainer onPress={handleGoToChangePassword}>
+                  <OptionContent isActive={!isDataActive}>
+                    <Option>Senha</Option>
+                  </OptionContent>
+                </OptionContainer>
+              </ChoosingChange>
+              {isDataActive ? (
+                <UserInformatonContainer>
+                  <UserInformation>
+                    <Input
+                      iconName="user"
+                      title={user.name}
+                      value={name}
+                      onChangeText={setName}
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <Input
+                      iconName="smile"
+                      title={user.username}
+                      editable={false}
+                      selectTextOnFocus={false}
+                      disabled
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <Input
+                      iconName="mail"
+                      title={user.email}
+                      editable={false}
+                      selectTextOnFocus={false}
+                      disabled
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <Input
+                      iconName="mail"
+                      title={user.website || 'Site'}
+                      value={website}
+                      onChangeText={setWebsite}
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <Input
+                      iconName="mail"
+                      title={user.phone || 'Telefone'}
+                      value={phone}
+                      onChangeText={setPhone}
+                    />
+                  </UserInformation>
+                </UserInformatonContainer>
+              ) : (
+                <UserInformatonContainer>
+                  <UserInformation>
+                    <PasswordInput
+                      title="Senha atual"
+                      value={password}
+                      onChangeText={setPassword}
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <PasswordInput
+                      title="Nova senha"
+                      value={newPassword}
+                      onChangeText={setNewPassword}
+                    />
+                  </UserInformation>
+                  <UserInformation>
+                    <PasswordInput
+                      title="Repita a nova senha"
+                      value={repeatNewPassword}
+                      onChangeText={setRepeatNewPassword}
+                    />
+                  </UserInformation>
+                </UserInformatonContainer>
+              )}
 
-            <Button
-              title="Salvar Alterações"
-              color={success}
-              onPress={handleSaveChanges}
-            />
-            <Button
-              title="Limpar Dados"
-              color={background_secondary}
-              onPress={handleCleanInputs}
-              isLightTheme
-            />
-            <Button
-              title="Excluir conta"
-              color={main}
-              onPress={handleOpenModal}
-            />
-          </InformationsContainer>
-        </Body>
+              <Button
+                title="Salvar Alterações"
+                color={success}
+                onPress={handleSaveChanges}
+              />
+              <Button
+                title="Limpar Dados"
+                color={background_secondary}
+                onPress={handleCleanInputs}
+                isLightTheme
+              />
+              <Button
+                title="Excluir conta"
+                color={main}
+                onPress={handleOpenModal}
+              />
+            </InformationsContainer>
+          </Body>
+        )}
       </Content>
       <DeleteAccountModal modalIsOpen={modalIsOpen}>
         <DeleteAccount onCloseModal={handleCloseModal} />
