@@ -15,10 +15,10 @@ export function Routes() {
     let isMounted = true;
     async function checkUser() {
       try {
-        await getUsers();
         setLoading(true);
         if (isMounted) {
           await checkIfUserIsLogged();
+          await getUsers();
         }
       } catch (error) {
         console.log(error);

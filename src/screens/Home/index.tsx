@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, Text } from 'react-native';
+import { StatusBar } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
+import NetInfo from '@react-native-community/netinfo';
 import { Header, PostCard } from '../../components';
 import { PostDTO } from '../../dtos/PostDTO';
 import { usePosts } from '../../hooks/Posts';
 import { useUsers } from '../../hooks/Users';
 import loadingPostsAnimated from '../../assets/post-animated.json';
+import Error404 from '../../assets/404-network.json';
 
 import { Container, Content, Posts, AnimationContainer } from './styles';
 
@@ -18,24 +20,31 @@ interface Post extends PostDTO {
 export function Home() {
   const [loading, setLoading] = useState(true);
   // eslint-disable-next-line prettier/prettier
-  const [formattedPostList, setFormattedPostList] = useState<Post[]>([] as Post[])
+  const [formattedPostList, setFormattedPostList] = useState<Post[]>([] as Post[]);
+  const [isConnected, setIsConnected] = useState<boolean>(true);
 
-  const { getPosts, posts } = usePosts();
+  const { getPosts, posts, hasPromiseError } = usePosts();
   const { getUsers, user, checkIfUserIsLogged } = useUsers();
 
   useEffect(() => {
-    // eslint-disable-next-line prefer-const
-    let isPostsMounted = true;
     async function fetchPosts() {
       setLoading(true);
       getUsers();
       getPosts();
       checkIfUserIsLogged();
-      setLoading(false);
     }
 
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      console.log(state.isInternetReachable);
+      setIsConnected(Boolean(state.isConnected));
+    });
+  }, []);
+
+  useEffect(() => {}, [isConnected]);
 
   useEffect(() => {
     // eslint-disable-next-line prefer-const
@@ -67,6 +76,18 @@ export function Home() {
     createFormattedPostList();
   }, [posts]);
 
+  useEffect(() => {
+    if (formattedPostList.length > 0) {
+      setLoading(false);
+    }
+  }, [formattedPostList]);
+
+  useEffect(() => {
+    if (hasPromiseError) {
+      setLoading(false);
+    }
+  }, [hasPromiseError]);
+
   return (
     <Container>
       <StatusBar
@@ -77,7 +98,7 @@ export function Home() {
       <Content>
         <Header userName={user.username} name={user.name} type="home" />
         <Posts>
-          {loading ? (
+          {loading && (
             <AnimationContainer>
               <LottieView
                 source={loadingPostsAnimated}
@@ -87,7 +108,8 @@ export function Home() {
                 loop
               />
             </AnimationContainer>
-          ) : (
+          )}
+          {!loading && posts.length > 0 && (
             <FlatList
               data={formattedPostList}
               keyExtractor={item => String(item.id)}
@@ -96,6 +118,17 @@ export function Home() {
               )}
               showsVerticalScrollIndicator={false}
             />
+          )}
+          {!loading && hasPromiseError && formattedPostList.length === 0 && (
+            <AnimationContainer>
+              <LottieView
+                source={Error404}
+                autoPlay
+                style={{ height: 300 }}
+                resizeMode="contain"
+                loop
+              />
+            </AnimationContainer>
           )}
         </Posts>
       </Content>

@@ -25,6 +25,7 @@ interface PostsContextData {
   editPost({ id, title, body, date, userId }: PostProps): Promise<void>;
   // eslint-disable-next-line no-unused-vars
   deletePost({ id }: DeleteProps): Promise<void>;
+  hasPromiseError: boolean;
 }
 
 interface PostsProviderProps {
@@ -35,17 +36,23 @@ const PostsContext = createContext<PostsContextData>({} as PostsContextData);
 
 function PostsProvider({ children }: PostsProviderProps) {
   const [posts, setPosts] = useState<Post[]>([] as Post[]);
+  const [hasPromiseError, setHasPromiseError] = useState<boolean>(false);
 
   async function getPosts() {
     // eslint-disable-next-line prefer-const
     let isMounted = true;
     try {
       const response = await api.get('/posts');
-      if (isMounted) {
+      if (response && isMounted) {
         setPosts(response.data);
       }
     } catch (error) {
-      throw new Error(String(error));
+      if (error) {
+        setHasPromiseError(true);
+        console.log('error');
+      }
+      const e = error as unknown as Error;
+      throw new Error(e.message);
     }
 
     return () => {
@@ -96,7 +103,14 @@ function PostsProvider({ children }: PostsProviderProps) {
 
   return (
     <PostsContext.Provider
-      value={{ posts, getPosts, sendPost, editPost, deletePost }}
+      value={{
+        posts,
+        getPosts,
+        sendPost,
+        editPost,
+        deletePost,
+        hasPromiseError,
+      }}
     >
       {children}
     </PostsContext.Provider>
