@@ -58,7 +58,7 @@ export function RegistrationFirstStep() {
   }
 
   return (
-    <KeyboardAvoidingView behavior="position" enabled>
+    <KeyboardAvoidingView behavior="position" enabled style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
           <BackButton onPress={handleGoBack} />

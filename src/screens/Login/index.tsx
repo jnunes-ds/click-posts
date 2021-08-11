@@ -5,6 +5,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
+  Platform,
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import * as Yup from 'yup';
@@ -61,7 +62,7 @@ export function Login() {
   }, []);
 
   return (
-    <KeyboardAvoidingView behavior="position" enabled>
+    <KeyboardAvoidingView behavior="position" enabled style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
           <Content>
@@ -79,9 +80,12 @@ export function Login() {
               <LoginInput>
                 <Input
                   iconName="mail"
+                  keyboardType="email-address"
                   title="E-mail"
+                  autoCapitalize="none"
                   value={email}
                   onChangeText={setEmail}
+                  autoCorrect={false}
                 />
               </LoginInput>
               <LoginInput>
@@ -89,6 +93,7 @@ export function Login() {
                   title="Senha"
                   value={password}
                   onChangeText={setPassword}
+                  autoCorrect={false}
                 />
               </LoginInput>
             </LoginContainer>
