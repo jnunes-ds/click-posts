@@ -39,7 +39,6 @@ export function Home() {
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      console.log(state.isInternetReachable);
       setIsConnected(Boolean(state.isConnected));
     });
   }, []);
